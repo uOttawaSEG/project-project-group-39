@@ -1,4 +1,5 @@
 package com.example.otams;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -11,14 +12,17 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        String role = getIntent().getStringExtra("ROLE");
         TextView welcomeText = findViewById(R.id.welcomeTextID);
-        Button logoutButton = findViewById(R.id.buttonLogout);
+        Button logoutButton = findViewById(R.id.logoutButton);
+
+        String role = getIntent().getStringExtra("ROLE");
+        if (role == null || role.isEmpty()) role = "User";
         welcomeText.setText("Welcome! You are logged in as " + role);
+
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            Intent i = new Intent(this, MainActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             finish(); }); }
 }
