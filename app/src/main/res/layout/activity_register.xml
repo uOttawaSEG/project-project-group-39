@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,11 +17,12 @@
 
     <EditText
         android:id="@+id/editTextText"
+        android:autofillHints="personName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/input_spacing"
         android:ems="10"
-        android:hint="First Name"
+        android:hint="@string/first_name_text"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,11 +30,12 @@
 
     <EditText
         android:id="@+id/editTextText2"
+        android:autofillHints="personName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/input_spacing"
         android:ems="10"
-        android:hint="Last Name"
+        android:hint="@string/last_name_text"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,11 +43,12 @@
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"
+        android:autofillHints="emailAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/input_spacing"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email_text"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,11 +56,12 @@
 
     <EditText
         android:id="@+id/editTextPhone"
+        android:autofillHints="phoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/input_spacing"
         android:ems="10"
-        android:hint="Phone"
+        android:hint="@string/phone_text"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,17 +69,19 @@
 
     <EditText
         android:id="@+id/editTextTextPassword"
+        android:autofillHints="password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/input_spacing"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/pass_text"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
 
     <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/input_spacing"
@@ -101,23 +106,25 @@
         android:id="@+id/backButt"
         android:layout_width="@dimen/back_size"
         android:layout_height="@dimen/back_size"
+        android:contentDescription="@string/back_button_description"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/returnbutton" />
+        app:srcCompat="@drawable/return_button" />
 
     <Button
         android:id="@+id/registrationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/input_spacing"
         android:layout_marginStart="155dp"
         android:layout_marginEnd="155dp"
-        android:text="Register"
+        android:layout_marginBottom="35dp"
+        android:text="@string/register"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="619dp" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
