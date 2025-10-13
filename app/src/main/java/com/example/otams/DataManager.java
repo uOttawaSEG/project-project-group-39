@@ -59,7 +59,7 @@ public class DataManager {
         String uid = currentUser.getUid();
 
         getDb().collection("users").document(uid).set(data)
-                .addOnSuccessListener(activity, () -> {
+                .addOnSuccessListener(activity, nVoid -> {
                     callback.onSuccess(null);
                 })
                 .addOnFailureListener(e -> {
