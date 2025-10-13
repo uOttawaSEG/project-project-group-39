@@ -38,9 +38,6 @@ public class RegisterActivity extends AppCompatActivity {
         program = findViewById(R.id.program);
         highestLevelOfStudy = findViewById(R.id.highestLevelOfStudy);
         coursesToTeach = findViewById(R.id.coursesToTeach);
-        EditText program = findViewById(R.id.program);
-        EditText highestLevelOfStudy = findViewById(R.id.highestLevelOfStudy);
-        EditText coursesToTeach = findViewById(R.id.coursesToTeach);
         firstName = findViewById(R.id.editTextText);
         lastName = findViewById(R.id.editTextText2);
         email = findViewById(R.id.editTextTextEmailAddress);
