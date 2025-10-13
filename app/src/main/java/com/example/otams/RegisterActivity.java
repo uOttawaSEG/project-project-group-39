@@ -122,6 +122,22 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "Please select a role", Toast.LENGTH_SHORT).show();
             ok = false;
         }
+        int selectedId = radioGroup.getCheckedRadioButtonId();
+        if (selectedId == R.id.Student) {
+            if (program.getText().toString().trim().isEmpty()) {
+                program.setError("Program is required!");
+                ok = false;
+            }
+        } else if (selectedId == R.id.Tutor) {
+            if (highestLevelOfStudy.getText().toString().trim().isEmpty()) {
+                highestLevelOfStudy.setError("Highest level of study is required!");
+                ok = false;
+            }
+            if (coursesToTeach.getText().toString().trim().isEmpty()) {
+                coursesToTeach.setError("Courses to teach are required!");
+                ok = false;
+            }
+        }
         return ok;
     }
 
@@ -177,7 +193,3 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 }
-
-
-
-
