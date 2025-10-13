@@ -49,7 +49,6 @@ public class RegisterActivity extends AppCompatActivity {
         Button registrationButton = findViewById(R.id.registrationButton);
 
 
-
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
