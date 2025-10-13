@@ -35,15 +35,16 @@ public class RegisterActivity extends AppCompatActivity {
 
         ImageButton backButton = findViewById(R.id.backButt);
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
-        final EditText program = findViewById(R.id.program);
-        final EditText highestLevelOfStudy = findViewById(R.id.highestLevelOfStudy);
-        final EditText coursesToTeach = findViewById(R.id.coursesToTeach);
+        EditText program = findViewById(R.id.program);
+        EditText highestLevelOfStudy = findViewById(R.id.highestLevelOfStudy);
+        EditText coursesToTeach = findViewById(R.id.coursesToTeach);
         firstName = findViewById(R.id.editTextText);
         lastName = findViewById(R.id.editTextText2);
         email = findViewById(R.id.editTextTextEmailAddress);
         phone = findViewById(R.id.editTextPhone);
         password = findViewById(R.id.editTextTextPassword);
         registrationButton = findViewById(R.id.registrationButton);
+
 
 
         auth = FirebaseAuth.getInstance();
@@ -53,6 +54,9 @@ public class RegisterActivity extends AppCompatActivity {
         program.setVisibility(View.GONE);
         highestLevelOfStudy.setVisibility(View.GONE);
         coursesToTeach.setVisibility(View.GONE);
+
+        radioGroup.check(R.id.Student);
+        program.setVisibility(View.VISIBLE);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -76,9 +80,23 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        registrationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Boolean verified = checkInputs(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), phone.getText().toString(), password.getText().toString());
+                registerUser();
+                if(verified) {
+                    Intent intent = new Intent(RegisterActivity.this, DashboardActivity.class);
+                    startActivity(intent);
+                }else{
+                    return;
+                }
+            }
+        });
 
 
     }
+
 
     private boolean checkInputs(String firstName, String lastName, String email, String phone, String password){
         boolean ok = true;
@@ -114,7 +132,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         return ok;
     }
-
     private void registerUser() {
         String userFirstName = firstName.getText().toString().trim();
         String userLastName = lastName.getText().toString().trim();
@@ -122,6 +139,24 @@ public class RegisterActivity extends AppCompatActivity {
         String userPhone = phone.getText().toString().trim();
         String userPassword = password.getText().toString().trim();
 
+        if(!checkInputs(userFirstName, userLastName, userEmail, userPhone, userPassword)){
+            return;
+        }else{
+            if(this.radioGroup.getCheckedRadioButtonId() == R.id.Student){
+                String uid = this.auth.getCurrentUser().getUid();
+                String role = this.radioGroup.getCheckedRadioButtonId() == R.id.Student ? "Student" : "Tutor";
+                String program = this.program.getText().toString().trim();
+                System.out.println(uid + role + program);
+            }else {
+                this.auth.createUserWithEmailAndPassword(userEmail, userPassword);
+                String uid = this.auth.getCurrentUser().getUid();
+                String role = this.radioGroup.getCheckedRadioButtonId() == R.id.Student ? "Student" : "Tutor";
+                String program = this.program.getText().toString().trim();
+                String highestLevelOfStudy = this.highestLevelOfStudy.getText().toString().trim();
+                String coursesToTeach = this.coursesToTeach.getText().toString().trim();
+                System.out.println(uid + role + highestLevelOfStudy + coursesToTeach);
+            }
+        }
 
     }
 
