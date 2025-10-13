@@ -18,16 +18,16 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseApp.initializeApp(this);
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = auth.getCurrentUser();
-
+        // Determine which page to display depending on login state
+        boolean isLoggedIn = AuthManager.isLoggedIn();
         Intent intent;
-        if (currentUser != null) {
-            intent = new Intent(MainActivity.this, Administrator.class);
+
+        if (isLoggedIn) {
+            intent = new Intent(MainActivity.this, DashboardActivity.class);
         } else {
             intent = new Intent(MainActivity.this, WelcomeActivity.class);
         }
-        startActivity(intent);
 
+        startActivity(intent);
     }
 }
