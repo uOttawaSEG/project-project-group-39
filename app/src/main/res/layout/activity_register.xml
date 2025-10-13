@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#908681"
     android:layout_height="match_parent">
 
     <TextView
@@ -12,6 +13,8 @@
         android:layout_marginTop="30dp"
         android:textSize="20sp"
         android:text="@string/registration_text"
+        android:textColor="#651d32"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -123,6 +126,7 @@
         android:layout_marginEnd="155dp"
         android:layout_marginBottom="35dp"
         android:text="@string/register"
+        android:backgroundTint="#651d32"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
