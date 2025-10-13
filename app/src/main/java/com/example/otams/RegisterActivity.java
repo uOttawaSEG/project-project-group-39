@@ -60,11 +60,11 @@ public class RegisterActivity extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(@NonNull RadioGroup group, int checkedId) {
-                if(checkedId == R.id.Student) {
+                if (checkedId == R.id.Student) {
                     program.setVisibility(View.VISIBLE);
                     highestLevelOfStudy.setVisibility(View.GONE);
                     coursesToTeach.setVisibility(View.GONE);
-                }else if(checkedId == R.id.Tutor){
+                } else if (checkedId == R.id.Tutor) {
                     program.setVisibility(View.GONE);
                     highestLevelOfStudy.setVisibility(View.VISIBLE);
                     coursesToTeach.setVisibility(View.VISIBLE);
@@ -83,10 +83,9 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 registerUser();
-                }
-            });
-        }
-
+            }
+        });;
+    }
     private boolean checkInputs(String firstName, String lastName, String email, String phone, String password) {
         boolean ok = true;
         if (firstName.isEmpty()) {
@@ -148,43 +147,51 @@ public class RegisterActivity extends AppCompatActivity {
         String userPhone = phone.getText().toString().trim();
         String userPassword = password.getText().toString().trim();
 
+        findViewById(R.id.registrationButton).setEnabled(false);
+
         if (!checkInputs(userFirstName, userLastName, userEmail, userPhone, userPassword)) {
+            findViewById(R.id.registrationButton).setEnabled(true);
             return;
         }
 
         auth.createUserWithEmailAndPassword(userEmail, userPassword)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        assert auth.getCurrentUser() != null;
-                        String uid = auth.getCurrentUser().getUid();
-                        String role = (radioGroup.getCheckedRadioButtonId() == R.id.Student) ? "Student" : "Tutor";
+                        com.google.firebase.auth.FirebaseUser fireBaseUser = task.getResult().getUser();
+                        if(fireBaseUser != null) {
+                            String uid = fireBaseUser.getUid();
+                            String role = (radioGroup.getCheckedRadioButtonId() == R.id.Student) ? "Student" : "Tutor";
 
-                        java.util.Map<String, Object> user = new java.util.HashMap<>();
-                        user.put("firstName", userFirstName);
-                        user.put("lastName", userLastName);
-                        user.put("email", userEmail);
-                        user.put("phone", userPhone);
-                        user.put("role", role);
+                            java.util.Map<String, Object> user = new java.util.HashMap<>();
+                            user.put("firstName", userFirstName);
+                            user.put("lastName", userLastName);
+                            user.put("email", userEmail);
+                            user.put("phone", userPhone);
+                            user.put("role", role);
+                            user.put("uid", uid);
 
-                        if (role.equals("Student")) {
-                            user.put("program", program.getText().toString().trim());
-                        } else {
-                            user.put("highestLevelOfStudy", highestLevelOfStudy.getText().toString().trim());
-                            user.put("coursesToTeach", coursesToTeach.getText().toString().trim());
+                            if (role.equals("Student")) {
+                                user.put("program", program.getText().toString().trim());
+                            } else {
+                                user.put("highestLevelOfStudy", highestLevelOfStudy.getText().toString().trim());
+                                user.put("coursesToTeach", coursesToTeach.getText().toString().trim());
+                            }
+
+                            db.collection("users").document(uid).set(user)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(RegisterActivity.this, DashboardActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(RegisterActivity.this, "Error saving user data: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        findViewById(R.id.registrationButton).setEnabled(true);
+                                    });
+                        }else{
+                            Toast.makeText(RegisterActivity.this, "Registration Failed: Could not get user.", Toast.LENGTH_LONG).show();
                         }
-
-                        db.collection("users").document(uid).set(user)
-                                .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterActivity.this, DashboardActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                    finish();
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(RegisterActivity.this, "Error saving user data: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                });
-
                     } else {
                         Toast.makeText(RegisterActivity.this, "Registration Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                     }
