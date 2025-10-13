@@ -18,16 +18,16 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseApp.initializeApp(this);
 
-        // Determine which page to display depending on login state
-        boolean isLoggedIn = AuthManager.isLoggedIn();
-        Intent intent;
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
 
-        if (isLoggedIn) {
-            intent = new Intent(MainActivity.this, DashboardActivity.class);
+        Intent intent;
+        if (currentUser != null) {
+            intent = new Intent(MainActivity.this, TutorDashboardActivity.class);
         } else {
             intent = new Intent(MainActivity.this, WelcomeActivity.class);
         }
-
         startActivity(intent);
+
     }
 }
