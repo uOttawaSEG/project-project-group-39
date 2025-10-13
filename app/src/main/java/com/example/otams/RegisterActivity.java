@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -79,11 +80,49 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    private boolean checkInputs(String firstName, String lastName, String email, String phone, String password){
+        boolean ok = true;
+        if(firstName.isEmpty()){
+            this.firstName.setError("First name required!");
+            ok = false;
+        }
+        if(lastName.isEmpty()) {
+            this.lastName.setError("Last name required!");
+            ok = false;
+        }
+        if(email.isEmpty()){
+            this.email.setError("Email required!");
+            ok = false;
+
+        }else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            this.email.setError("Invalid email!");
+            ok = false;
+        }
+        if(phone.isEmpty()){
+            this.phone.setError("Phone required!");
+            ok = false;
+        }else if(phone.length() != 10){
+            this.phone.setError("Phone number must be 10 digits!");
+            ok = false;
+        }
+        if(password.isEmpty()){
+            this.password.setError("Password required!");
+            ok = false;
+        }else if(password.length() < 8 || !password.matches(".*[^a-zA-Z0-9 ].*")|| !password.matches(".*[0-9].*")){
+            this.password.setError("Password must be at least 8 characters long and contain at least one special character and one number!");
+        }
+
+        return ok;
+    }
+
     private void registerUser() {
         String userFirstName = firstName.getText().toString().trim();
         String userLastName = lastName.getText().toString().trim();
         String userEmail = email.getText().toString().trim();
         String userPhone = phone.getText().toString().trim();
+        String userPassword = password.getText().toString().trim();
+
+
     }
 
 }
