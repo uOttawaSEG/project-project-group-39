@@ -79,4 +79,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    private void registerUser() {
+        String userFirstName = firstName.getText().toString().trim();
+        String userLastName = lastName.getText().toString().trim();
+        String userEmail = email.getText().toString().trim();
+        String userPhone = phone.getText().toString().trim();
+    }
+
 }
