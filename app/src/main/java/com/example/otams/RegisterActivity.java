@@ -1,5 +1,7 @@
 package com.example.otams;
 
+import android.text.style.DrawableMarginSpan;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +13,20 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+
 public class RegisterActivity extends AppCompatActivity {
+
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
+    private EditText firstName, lastName, email, phone, password;
+    private RadioGroup radioGroup;
+    private Button registrationButton;
+    private EditText program, highestLevelOfStudy, coursesToTeach;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,9 +34,20 @@ public class RegisterActivity extends AppCompatActivity {
 
         ImageButton backButton = findViewById(R.id.backButt);
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
-        EditText program = findViewById(R.id.program);
-        EditText highestLevelOfStudy = findViewById(R.id.highestLevelOfStudy);
-        EditText coursesToTeach = findViewById(R.id.coursesToTeach);
+        final EditText program = findViewById(R.id.program);
+        final EditText highestLevelOfStudy = findViewById(R.id.highestLevelOfStudy);
+        final EditText coursesToTeach = findViewById(R.id.coursesToTeach);
+        firstName = findViewById(R.id.editTextText);
+        lastName = findViewById(R.id.editTextText2);
+        email = findViewById(R.id.editTextTextEmailAddress);
+        phone = findViewById(R.id.editTextPhone);
+        password = findViewById(R.id.editTextTextPassword);
+        registrationButton = findViewById(R.id.registrationButton);
+
+
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
 
         program.setVisibility(View.GONE);
         highestLevelOfStudy.setVisibility(View.GONE);
