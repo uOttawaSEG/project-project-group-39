@@ -154,6 +154,7 @@ public class RegisterActivity extends AppCompatActivity {
                 data.put("lastName", userLastName);
                 data.put("email", userEmail);
                 data.put("phone", userPhone);
+                data.put("password", userPassword);
                 data.put("role", role);
 
                 if (role.equals("Student")) {
