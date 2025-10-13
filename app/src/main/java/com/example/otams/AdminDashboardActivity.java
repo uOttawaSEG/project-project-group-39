@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class AdminDashboardActivity extends AppCompatActivity {
 
@@ -16,7 +15,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         Button logoutButton = findViewById(R.id.logoutButton);
 
         logoutButton.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
+            AuthManager.logout();
             Intent intent = new Intent(AdminDashboardActivity.this, WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

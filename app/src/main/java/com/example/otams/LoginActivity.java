@@ -12,15 +12,11 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class LoginActivity extends AppCompatActivity {
-
     private EditText emailText, passwordText;
-
-    private FirebaseAuth auth;
-    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,21 +33,43 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         emailText = findViewById(R.id.emailID);
         passwordText = findViewById(R.id.passwordID);
         Button loginButton = findViewById(R.id.buttonLogin);
-
-        auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
 
         loginButton.setOnClickListener(v -> {
             String email = emailText.getText().toString().trim();
             String password = passwordText.getText().toString();
             if (!checkInputs(email, password))
                 return;
-            firebaseSignIn(email, password); });
+
+            AuthManager.login(email, password, LoginActivity.this, new AuthManager.AuthResultCallback() {
+                @Override
+                public void onSuccess(FirebaseUser user) {
+                    DataManager.getData(LoginActivity.this, new DataManager.DataCallback() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot data) {
+                            String role = data.getString("role");
+
+                            goToWelcome(role != null ? role : "Student");
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Toast.makeText(LoginActivity.this, "Login failed (id 2): " + errorMessage, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    Toast.makeText(LoginActivity.this, "Wrong email or password", Toast.LENGTH_LONG).show();
+                }
+            });
+        });
     }
+
+
     private boolean checkInputs(String email, String password) {
         boolean ok = true;
         if (email.isEmpty()) {
@@ -64,32 +82,12 @@ public class LoginActivity extends AppCompatActivity {
         if (password.isEmpty()) {
             passwordText.setError("Password required!");
             ok = false;
-        } else if (password.length() < 6) {
-            passwordText.setError("Password too short!");
-            ok = false;
         }
         return ok;
     }
 
-    private void firebaseSignIn(String email, String password) {
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String uid = auth.getCurrentUser().getUid();
-                        db.collection("users").document(uid).get()
-                                .addOnSuccessListener(doc -> {
-                                    String role = doc.getString("role");
-                                    if (role == null) role = "Student";
-                                    goToWelcome(role); })
-                                .addOnFailureListener(e ->
-                                        Toast.makeText(this, "Error getting role: " + e.getMessage(), Toast.LENGTH_LONG).show()
-                                ); } 
-                    else {
-                        Toast.makeText(this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show(); } });
-    }
-
     private void goToWelcome(String role) {
-        Intent intent = new Intent(this, WelcomeActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("ROLE", role);
         startActivity(intent);
         finish();
