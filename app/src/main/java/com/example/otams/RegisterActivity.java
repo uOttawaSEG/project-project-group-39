@@ -122,7 +122,6 @@ public class RegisterActivity extends AppCompatActivity {
             this.password.setError("Password must be at least 8 characters long and contain at least one special character and one number!");
             ok = false;
         }
-        // FIX: Check the radioGroup
         if (radioGroup.getCheckedRadioButtonId() == -1) {
             Toast.makeText(this, "Please select a role", Toast.LENGTH_SHORT).show();
             ok = false;
