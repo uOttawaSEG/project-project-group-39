@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,8 +9,8 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:textSize="50sp"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
         android:text="@string/registration_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,13 +91,13 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword">
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/Student"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/student_option" />
 
         <RadioButton
-            android:id="@+id/radioButton4"
+            android:id="@+id/Tutor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/tutor_option" />
@@ -126,5 +127,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/program"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="@dimen/input_spacing"
+        android:layout_marginEnd="101dp"
+        android:ems="10"
+        android:hint="@string/program_of_study"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/radioGroup" />
+
+    <EditText
+        android:id="@+id/highestLevelOfStudy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:ems="10"
+        android:hint="@string/highest_level_of_study"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+    <EditText
+        android:id="@+id/coursesToTeach"
+        android:layout_width="216dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/input_spacing"
+        android:hint="@string/courses_to_teach"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/highestLevelOfStudy"
+        app:layout_constraintBottom_toTopOf="@+id/registrationButton" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

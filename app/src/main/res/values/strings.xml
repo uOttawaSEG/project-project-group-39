@@ -18,4 +18,7 @@
     <string name="back_button">Back Button</string>
     <string name="login_to_your_account">Login To Your Account!</string>
     <string name="login">Login</string>
+    <string name="program_of_study">Program of Study</string>
+    <string name="courses_to_teach">Courses to Teach</string>
+    <string name="highest_level_of_study">Highest Level of Study</string>
 </resources>
