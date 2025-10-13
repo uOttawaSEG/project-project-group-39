@@ -58,7 +58,7 @@ public class DataManager {
         // Create the user's data
         String uid = currentUser.getUid();
 
-        db.collection("users").document(uid).set(data)
+        getDb().collection("users").document(uid).set(data)
                 .addOnSuccessListener(activity, () -> {
                     callback.onSuccess(null);
                 })
