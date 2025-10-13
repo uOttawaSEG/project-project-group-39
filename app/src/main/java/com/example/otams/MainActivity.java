@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
                     String role = data.getString("role");
 
                     if (Objects.equals(role, "Tutor")) {
-                        //System.out.println("say u hate me");
                         intent = new Intent(MainActivity.this, TutorDashboardActivity.class);
                     } else if (Objects.equals(role, "Student")) {
                         intent = new Intent(MainActivity.this, StudentDashboardActivity.class);

@@ -169,7 +169,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot data) {
                         Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(RegisterActivity.this, TutorDashboardActivity.class);
+                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                         startActivity(intent);
