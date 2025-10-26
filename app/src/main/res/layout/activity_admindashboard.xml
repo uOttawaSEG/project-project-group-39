@@ -216,8 +216,10 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="#19625656"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:tabSelectedTextColor="#651d32"
+        app:tabIconTint="@color/OurRED"
         app:tabIndicatorColor="#651d32"
+        app:tabSelectedTextColor="#651d32"
+        app:tabRippleColor="#05444542"
         tools:layout_editor_absoluteX="0dp">
 
         <com.google.android.material.tabs.TabItem
