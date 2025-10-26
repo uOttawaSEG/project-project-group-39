@@ -7,12 +7,70 @@
     android:background="#908681">
 
     <ScrollView
-        android:id="@+id/approvedList"
+        android:id="@+id/deniedList"
         android:layout_width="411dp"
         android:layout_height="393dp"
         android:scrollbarStyle="outsideInset"
         android:visibility="invisible"
-        tools:layout_editor_absoluteY="255dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout5">
+
+        <LinearLayout
+            android:id="@+id/vertical_row_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:background="#00857974"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="John's request for new laptop"
+                    android:textColor="#651d32"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#05444542"
+                    android:text="Approve"
+                    android:textColor="#651d32"
+                    app:cornerRadius="50px"
+                    app:strokeColor="#651d32"
+                    app:strokeWidth="2px" />
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#05444542"
+                    android:text="Deny"
+                    android:textColor="#651d32"
+                    app:strokeColor="#651d32"
+                    app:strokeWidth="2px" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/currentList"
+        android:layout_width="411dp"
+        android:layout_height="393dp"
+        android:scrollbarStyle="outsideInset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout5">
 
         <LinearLayout
             android:id="@+id/vertical_row_container"
@@ -69,7 +127,8 @@
         android:layout_height="393dp"
         android:scrollbarStyle="outsideInset"
         android:visibility="invisible"
-        tools:layout_editor_absoluteY="255dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout5">
 
         <LinearLayout
             android:id="@+id/vertical_row_container"
@@ -150,70 +209,12 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         app:layout_constraintVertical_bias="0.966" />
 
-    <ScrollView
-        android:id="@+id/approvedList"
-        android:layout_width="411dp"
-        android:layout_height="393dp"
-        android:scrollbarStyle="outsideInset"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout5">
-
-        <LinearLayout
-            android:id="@+id/vertical_row_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:background="#00857974"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="John's request for new laptop"
-                    android:textColor="#651d32"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#05444542"
-                    android:text="Approve"
-                    android:textColor="#651d32"
-                    app:cornerRadius="50px"
-                    app:strokeColor="#651d32"
-                    app:strokeWidth="2px" />
-
-                <Button
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#05444542"
-                    android:text="Deny"
-                    android:textColor="#651d32"
-                    app:strokeColor="#651d32"
-                    app:strokeWidth="2px" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout5"
         android:layout_width="412dp"
         android:layout_height="36dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="#19625656"
-        app:layout_constraintBottom_toTopOf="@+id/approvedList"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:layout_editor_absoluteX="0dp">
 
