@@ -155,7 +155,8 @@
         android:layout_width="411dp"
         android:layout_height="393dp"
         android:scrollbarStyle="outsideInset"
-        tools:layout_editor_absoluteY="255dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout5">
 
         <LinearLayout
             android:id="@+id/vertical_row_container"
@@ -207,11 +208,14 @@
     </ScrollView>
 
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout5"
         android:layout_width="412dp"
         android:layout_height="36dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="#19625656"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="219dp">
+        app:layout_constraintBottom_toTopOf="@+id/approvedList"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:layout_editor_absoluteX="0dp">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
