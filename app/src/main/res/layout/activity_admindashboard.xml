@@ -6,43 +6,13 @@
     android:layout_height="match_parent"
     android:background="#908681">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="273dp"
-        android:layout_height="124dp"
-        android:gravity="center"
-        android:text="Welcome! You are logged in as an Admin."
-        android:textColor="#651d32"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.142"
-        tools:layout_editor_absoluteX="69dp"
-        tools:layout_editor_absoluteY="94dp" />
-
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#651d32"
-        android:text="Logout"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.92"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="512dp" />
-
     <ScrollView
-        android:layout_width="412dp"
-        android:layout_height="500dp"
-        tools:layout_editor_absoluteY="231dp">
+        android:id="@+id/approvedList"
+        android:layout_width="411dp"
+        android:layout_height="393dp"
+        android:scrollbarStyle="outsideInset"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteY="255dp">
 
         <LinearLayout
             android:id="@+id/vertical_row_container"
@@ -53,7 +23,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
                 android:background="#00857974"
                 android:gravity="center_vertical"
@@ -92,5 +62,172 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <ScrollView
+        android:id="@+id/approvedList"
+        android:layout_width="411dp"
+        android:layout_height="393dp"
+        android:scrollbarStyle="outsideInset"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteY="255dp">
+
+        <LinearLayout
+            android:id="@+id/vertical_row_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:background="#00857974"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="John's request for new laptop"
+                    android:textColor="#651d32"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#05444542"
+                    android:text="Approve"
+                    android:textColor="#651d32"
+                    app:cornerRadius="50px"
+                    app:strokeColor="#651d32"
+                    app:strokeWidth="2px" />
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#05444542"
+                    android:text="Deny"
+                    android:textColor="#651d32"
+                    app:strokeColor="#651d32"
+                    app:strokeWidth="2px" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="273dp"
+        android:layout_height="124dp"
+        android:gravity="center"
+        android:text="Welcome! You are logged in as an Admin."
+        android:textColor="#651d32"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.142"
+        tools:layout_editor_absoluteX="69dp"
+        tools:layout_editor_absoluteY="94dp" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#651d32"
+        android:text="Logout"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.966" />
+
+    <ScrollView
+        android:id="@+id/approvedList"
+        android:layout_width="411dp"
+        android:layout_height="393dp"
+        android:scrollbarStyle="outsideInset"
+        tools:layout_editor_absoluteY="255dp">
+
+        <LinearLayout
+            android:id="@+id/vertical_row_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:background="#00857974"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="John's request for new laptop"
+                    android:textColor="#651d32"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#05444542"
+                    android:text="Approve"
+                    android:textColor="#651d32"
+                    app:cornerRadius="50px"
+                    app:strokeColor="#651d32"
+                    app:strokeWidth="2px" />
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#05444542"
+                    android:text="Deny"
+                    android:textColor="#651d32"
+                    app:strokeColor="#651d32"
+                    app:strokeWidth="2px" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="412dp"
+        android:layout_height="36dp"
+        android:backgroundTint="#19625656"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="219dp">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fadeScrollbars="false"
+            android:text="Current" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Denied" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Approved" />
+    </com.google.android.material.tabs.TabLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
