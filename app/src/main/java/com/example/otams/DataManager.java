@@ -60,7 +60,7 @@ public class DataManager {
                     callback.onFailure(null);
                 });
     }
-
+    // i am trying to branch
     public static void createData(Activity activity, HashMap<String, Object> data, DataCallback callback) {
         // Retrieve the current user
         FirebaseUser currentUser = AuthManager.getCurrentUser();
