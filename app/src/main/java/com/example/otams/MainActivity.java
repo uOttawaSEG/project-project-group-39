@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(String errorMessage) {
-                    Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
