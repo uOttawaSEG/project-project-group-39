@@ -12,7 +12,7 @@
         android:layout_width="273dp"
         android:layout_height="124dp"
         android:gravity="center"
-        android:text="Welcome! You are logged in as an Admin."
+        android:text="@string/admin_welcome"
         android:textColor="#651d32"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#651d32"
-        android:text="Logout"
+        android:text="@string/logout_button"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,31 +43,32 @@
         android:layout_height="36dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="#19625656"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         app:tabIconTint="@color/OurRED"
         app:tabIndicatorColor="#651d32"
         app:tabRippleColor="#05444542"
-        app:tabSelectedTextColor="#651d32"
-        tools:layout_editor_absoluteX="0dp">
+        app:tabSelectedTextColor="#651d32">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/currentTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fadeScrollbars="false"
-            android:text="Current" />
+            android:text="@string/current_tab" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/deniedTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Denied" />
+            android:text="@string/denied_tab" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/approvedTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Approved" />
+            android:text="@string/approved_tab" />
     </com.google.android.material.tabs.TabLayout>
 
     <ScrollView
@@ -75,12 +76,13 @@
         android:layout_width="411dp"
         android:layout_height="393dp"
         android:clickable="false"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
         android:scrollbarStyle="outsideInset"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listSelection"
-        android:descendantFocusability="blocksDescendants"
-        android:focusable="false">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
 
         <LinearLayout
             android:id="@+id/deniedListContainer"
@@ -98,11 +100,12 @@
         android:layout_width="411dp"
         android:layout_height="393dp"
         android:clickable="false"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
         android:scrollbarStyle="outsideInset"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listSelection"
-        android:descendantFocusability="blocksDescendants"
-        android:focusable="false">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
 
         <LinearLayout
             android:id="@+id/currentListContainer"
@@ -120,12 +123,13 @@
         android:layout_width="411dp"
         android:layout_height="393dp"
         android:clickable="false"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
         android:scrollbarStyle="outsideInset"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listSelection"
-        android:descendantFocusability="blocksDescendants"
-        android:focusable="false">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
 
         <LinearLayout
             android:id="@+id/approvedListContainer"
