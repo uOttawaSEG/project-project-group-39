@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
     private EditText emailText, passwordText;
 
@@ -49,9 +51,22 @@ public class LoginActivity extends AppCompatActivity {
                     DataManager.getData(LoginActivity.this, new DataManager.DataCallback() {
                         @Override
                         public void onSuccess(DocumentSnapshot data) {
-                            String role = data.getString("role");
+                            // Check their request status
+                            if ((Objects.equals(data.getBoolean("isPending"), true) || Objects.equals(data.getBoolean("isDenied"), true)) && !data.getBoolean("isAccepted")) {
+                                AuthManager.logout();
 
-                            goToWelcome(role != null ? role : "Student");
+                                if (Objects.equals(data.getBoolean("isDenied"), true)) {
+                                    Toast.makeText(LoginActivity.this, "Your request has been denied by the administrator", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Your request has not been reviewed yet", Toast.LENGTH_LONG).show();
+                                }
+
+                                return;
+                            } else {
+                                String role = data.getString("role");
+
+                                goToWelcome(role != null ? role : "Student");
+                            }
                         }
 
                         @Override
