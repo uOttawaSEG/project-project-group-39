@@ -11,8 +11,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
 
 public class AdminDashboardActivity extends AppCompatActivity {
 
@@ -48,6 +51,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+
     }
 
     protected void updateCurrentList(QuerySnapshot data) {
@@ -70,6 +75,24 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
             textViewName.setText(firstName + " " + lastName);
             currentList.addView(requestRow);
+
+            approveBtn.setOnClickListener(v -> {
+                DataManager.updateData(AdminDashboardActivity.this, document.getId(), new HashMap<String, Object>() {{
+                    put("isPending", false);
+                    put("isDenied", false); // just in case it was denied before
+                    put("isAccepted", true);
+                }}, new DataManager.DataCallback() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot data) {
+                        Toast.makeText(AdminDashboardActivity.this, "Request approved", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Toast.makeText(AdminDashboardActivity.this, "Error while trying to approve request: " + errorMessage, Toast.LENGTH_LONG).show();
+                    }
+                });
+            });
         }
     }
 }
