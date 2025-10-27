@@ -82,4 +82,26 @@ public class DataManager {
                     callback.onFailure(null);
                 });
     }
+
+    public static void updateData(Activity activity, HashMap<String, Object> data, DataCallback callback) {
+        // Retrieve the current user
+        FirebaseUser currentUser = AuthManager.getCurrentUser();
+
+        if (currentUser == null) {
+            callback.onFailure("No user is logged in");
+
+            return;
+        }
+
+        // Create the user's data
+        String uid = currentUser.getUid();
+
+        getDb().collection("users").document(uid).update(data)
+                .addOnSuccessListener(activity, nVoid -> {
+                    callback.onSuccess(null);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onFailure(null);
+                });
+    }
 }
