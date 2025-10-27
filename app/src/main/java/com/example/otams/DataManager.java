@@ -8,6 +8,9 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
 
 import java.util.HashMap;
 
@@ -19,6 +22,11 @@ public class DataManager {
 
     public interface DataCallback {
         void onSuccess(DocumentSnapshot data);
+        void onFailure(String errorMessage);
+    }
+
+    public interface QueryCallback {
+        void onSuccess(QuerySnapshot data);
         void onFailure(String errorMessage);
     }
 
@@ -37,10 +45,18 @@ public class DataManager {
         String uid = currentUser.getUid();
 
         getDb().collection("users").document(uid).get()
-                .addOnSuccessListener(activity, doc -> {
-                    callback.onSuccess(doc);
-                })
+                .addOnSuccessListener(activity, callback::onSuccess)
                 .addOnFailureListener(activity, doc -> {
+                    callback.onFailure(null);
+                });
+    }
+
+    public static void getDataOfType(Activity activity, String key, Object value, QueryCallback callback) {
+        // Retrieve the data where the key = value
+        getDb().collection("users").whereEqualTo(key, value).get()
+                .addOnSuccessListener(activity, callback::onSuccess)
+                .addOnFailureListener(activity, err -> {
+                    Toast.makeText(activity, err.getMessage(), Toast.LENGTH_LONG).show();
                     callback.onFailure(null);
                 });
     }
@@ -64,6 +80,16 @@ public class DataManager {
                 })
                 .addOnFailureListener(e -> {
                     callback.onFailure(null);
+                });
+    }
+
+    public static void updateData(Activity activity, String docUid, HashMap<String, Object> data, DataCallback callback) {
+        getDb().collection("users").document(docUid).update(data)
+                .addOnSuccessListener(activity, nVoid -> {
+                    callback.onSuccess(null);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onFailure(e.getMessage());
                 });
     }
 }

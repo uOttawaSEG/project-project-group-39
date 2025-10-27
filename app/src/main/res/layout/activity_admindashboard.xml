@@ -1,42 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#908681"
-    android:layout_height="match_parent">
+    android:clickable="false">
 
     <TextView
         android:id="@+id/textView3"
+        android:layout_width="273dp"
+        android:layout_height="124dp"
+        android:gravity="center"
+        android:text="@string/admin_welcome"
+        android:textColor="#651d32"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.142"
-        android:layout_width="273dp"
-        android:layout_height="124dp"
-        android:gravity="center"
-        android:text="Welcome! You are logged in as an Admin."
-        android:textColor="#651d32"
-        android:textSize="30sp"
-        android:textStyle="bold"
         tools:layout_editor_absoluteX="69dp"
         tools:layout_editor_absoluteY="94dp" />
 
     <Button
         android:id="@+id/logoutButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.92"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#651d32"
-        android:text="Logout"
+        android:text="@string/logout_button"
         android:textSize="15sp"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="512dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.966" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/listSelection"
+        android:layout_width="412dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#19625656"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:tabIconTint="@color/OurRED"
+        app:tabIndicatorColor="#651d32"
+        app:tabRippleColor="#05444542"
+        app:tabSelectedTextColor="#651d32">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/currentTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fadeScrollbars="false"
+            android:text="@string/current_tab" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/deniedTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/denied_tab" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/approvedTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/approved_tab" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <ScrollView
+        android:id="@+id/deniedList"
+        android:layout_width="411dp"
+        android:layout_height="393dp"
+        android:clickable="false"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
+        android:scrollbarStyle="outsideInset"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+
+        <LinearLayout
+            android:id="@+id/deniedListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="visible" />
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/currentList"
+        android:layout_width="411dp"
+        android:layout_height="393dp"
+        android:clickable="false"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
+        android:scrollbarStyle="outsideInset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+
+        <LinearLayout
+            android:id="@+id/currentListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="visible" />
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/approvedList"
+        android:layout_width="411dp"
+        android:layout_height="393dp"
+        android:clickable="false"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
+        android:scrollbarStyle="outsideInset"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+
+        <LinearLayout
+            android:id="@+id/approvedListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="visible">
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

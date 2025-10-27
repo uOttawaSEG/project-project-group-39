@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/row_request_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Request Details..."
+        android:textSize="16sp"/>
+
+    <Button
+        android:id="@+id/row_approve_button"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="0px"
+        android:text="Approve"
+        android:minWidth="80dp"
+        android:minHeight="48dp"/>
+
+    <Button
+         android:id="@+id/row_deny_button"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="Deny"
+         style="?android:attr/buttonBarButtonStyle"
+         android:minWidth="80dp"
+         android:minHeight="48dp"/>
+
+</LinearLayout>

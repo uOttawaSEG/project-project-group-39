@@ -21,4 +21,11 @@
     <string name="program_of_study">Program of Study</string>
     <string name="courses_to_teach">Courses to Teach</string>
     <string name="highest_level_of_study">Highest Level of Study</string>
+    <string name="adminWelcomeMessage">Hey, welcome to admin dashboard</string>
+    <string name="logoutText">Logout</string>
+    <string name="admin_welcome">Welcome! You are logged in as an Admin.</string>
+    <string name="logout_button">Logout</string>
+    <string name="current_tab">Current</string>
+    <string name="denied_tab">Denied</string>
+    <string name="approved_tab">Approved</string>
 </resources>

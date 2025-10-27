@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/popup_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Full Name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/popup_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email: user@example.com"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/popup_role"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Role: Student"
+        android:textSize="16sp"
+        android:layout_marginTop="4dp"
+        android:textColor="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/popup_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone: 123-456-7890"
+        android:textSize="16sp"
+        android:layout_marginTop="4dp"
+        android:textColor="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/popup_program"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Program: Computer Science"
+        android:textSize="16sp"
+        android:layout_marginTop="4dp"
+        android:textColor="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/popup_highestLevelOfStudy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Highest Level of Study:"
+        android:textSize="16sp"
+        android:layout_marginTop="4dp"
+        android:textColor="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/popup_coursesToTeach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Courses:"
+        android:textSize="16sp"
+        android:layout_marginTop="4dp"
+        android:textColor="@android:color/darker_gray"/>
+
+    <Button
+        android:id="@+id/popup_close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="Close"/>
+
+</LinearLayout>
