@@ -15,10 +15,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuth;
+
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
     private EditText firstName, lastName, email, phone, password;
     private RadioGroup radioGroup;
     private EditText program, highestLevelOfStudy, coursesToTeach;
@@ -40,6 +46,9 @@ public class RegisterActivity extends AppCompatActivity {
         phone = findViewById(R.id.editTextPhone);
         password = findViewById(R.id.editTextTextPassword);
         Button registrationButton = findViewById(R.id.registrationButton);
+
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         program.setVisibility(View.GONE);
         highestLevelOfStudy.setVisibility(View.GONE);
@@ -158,6 +167,8 @@ public class RegisterActivity extends AppCompatActivity {
                 data.put("role", role);
                 data.put("isPending", true);
 
+
+
                 if (role.equals("Student")) {
                     data.put("program", program.getText().toString().trim());
                 } else {
@@ -165,17 +176,18 @@ public class RegisterActivity extends AppCompatActivity {
                     data.put("coursesToTeach", coursesToTeach.getText().toString().trim());
                 }
 
+
                 // Create it in the database
                 DataManager.createData(RegisterActivity.this, data, new DataManager.DataCallback() {
                     @Override
                     public void onSuccess(DocumentSnapshot data) {
                         Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
                         Toast.makeText(RegisterActivity.this, "Please wait for your request to be reviewed by an administrator.", Toast.LENGTH_LONG).show();
-
-//                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        startActivity(intent);
-//                        finish();
+                        AuthManager.logout();
+                        Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
                     }
 
                     @Override
