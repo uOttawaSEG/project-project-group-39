@@ -1,4 +1,4 @@
-# Project Group 39
+## Project Group 39
 
 ## Admin Account
 Use the following credentials to access the admin account:
