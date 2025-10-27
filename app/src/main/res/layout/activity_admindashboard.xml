@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#908681">
+    android:background="#908681"
+    android:clickable="false">
 
     <TextView
         android:id="@+id/textView3"
@@ -45,8 +46,8 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         app:tabIconTint="@color/OurRED"
         app:tabIndicatorColor="#651d32"
-        app:tabSelectedTextColor="#651d32"
         app:tabRippleColor="#05444542"
+        app:tabSelectedTextColor="#651d32"
         tools:layout_editor_absoluteX="0dp">
 
         <com.google.android.material.tabs.TabItem
@@ -73,52 +74,70 @@
         android:id="@+id/deniedList"
         android:layout_width="411dp"
         android:layout_height="393dp"
+        android:clickable="false"
         android:scrollbarStyle="outsideInset"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+        app:layout_constraintTop_toBottomOf="@+id/listSelection"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false">
 
         <LinearLayout
             android:id="@+id/deniedListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
             android:orientation="vertical"
             android:padding="8dp"
-            android:visibility="invisible" />
+            android:visibility="visible" />
     </ScrollView>
 
     <ScrollView
         android:id="@+id/currentList"
         android:layout_width="411dp"
         android:layout_height="393dp"
+        android:clickable="false"
         android:scrollbarStyle="outsideInset"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+        app:layout_constraintTop_toBottomOf="@+id/listSelection"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false">
 
         <LinearLayout
             android:id="@+id/currentListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
             android:orientation="vertical"
             android:padding="8dp"
-            android:visibility="invisible" />
+            android:visibility="visible" />
     </ScrollView>
 
     <ScrollView
         android:id="@+id/approvedList"
         android:layout_width="411dp"
         android:layout_height="393dp"
+        android:clickable="false"
         android:scrollbarStyle="outsideInset"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+        app:layout_constraintTop_toBottomOf="@+id/listSelection"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false">
 
         <LinearLayout
             android:id="@+id/approvedListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
             android:orientation="vertical"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:visibility="visible">
+
+        </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

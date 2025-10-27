@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,28 +68,28 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateCurrentSelection(TabLayout.Tab selectedTab) {
-        LinearLayout currentList = findViewById(R.id.currentListContainer);
-        LinearLayout deniedList = findViewById(R.id.deniedListContainer);
-        LinearLayout approvedList = findViewById(R.id.approvedListContainer);
+        ScrollView currentList = findViewById(R.id.currentList);
+        ScrollView deniedList = findViewById(R.id.deniedList);
+        ScrollView approvedList = findViewById(R.id.approvedList);
 
         if (selectedTab.getPosition() == 0) {
             // Update visibility
             currentList.setVisibility(View.VISIBLE);
-            deniedList.setVisibility(View.INVISIBLE);
-            approvedList.setVisibility(View.INVISIBLE);
+            deniedList.setVisibility(View.GONE);
+            approvedList.setVisibility(View.GONE);
 
             updateCurrentList();
         } else if (selectedTab.getPosition() == 1) {
             // Update visibility
-            currentList.setVisibility(View.INVISIBLE);
+            currentList.setVisibility(View.GONE);
             deniedList.setVisibility(View.VISIBLE);
-            approvedList.setVisibility(View.INVISIBLE);
+            approvedList.setVisibility(View.GONE);
 
             updateDeniedList();
         } else {
             // Update visibility
-            currentList.setVisibility(View.INVISIBLE);
-            deniedList.setVisibility(View.INVISIBLE);
+            currentList.setVisibility(View.GONE);
+            deniedList.setVisibility(View.GONE);
             approvedList.setVisibility(View.VISIBLE);
 
             updateApprovedList();
@@ -119,6 +120,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                     textViewName.setText(firstName + " " + lastName);
 
                     approveBtn.setOnClickListener(v -> {
+                        Toast.makeText(AdminDashboardActivity.this, "click test", Toast.LENGTH_LONG).show();
                         DataManager.updateData(AdminDashboardActivity.this, document.getId(), new HashMap<String, Object>() {{
                             put("isPending", false);
                             put("isDenied", false); // just in case it was denied before
@@ -193,6 +195,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                     String lastName = document.getString("lastName");
 
                     textViewName.setText(firstName + " " + lastName);
+                    approveBtn.bringToFront();
 
                     approveBtn.setOnClickListener(v -> {
                         DataManager.updateData(AdminDashboardActivity.this, document.getId(), new HashMap<String, Object>() {{
