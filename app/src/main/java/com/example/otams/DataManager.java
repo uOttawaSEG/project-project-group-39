@@ -110,4 +110,66 @@ public class DataManager {
                     callback.onFailure(e.getMessage());
                 });
     }
+
+    public static void createAvailabilitySlot(Activity activity, HashMap<String, Object> data, DataCallback callback) {
+        getDb().collection("availabilitySlots").add(data)
+                .addOnSuccessListener(activity, docRef -> {
+                    callback.onSuccess(null);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onFailure(e.getMessage());
+                });
+    }
+
+    public static void getSlotsOfType(Activity activity, String key, Object value, QueryCallback callback) {
+        // Retrieve the data where the key = value in the new collection
+        getDb().collection("availabilitySlots").whereEqualTo(key, value).get()
+                .addOnSuccessListener(activity, callback::onSuccess)
+                .addOnFailureListener(activity, err -> {
+                    // Optionally remove Toast if you want silent failure, but helpful for debugging
+                    Toast.makeText(activity, err.getMessage(), Toast.LENGTH_LONG).show();
+                    callback.onFailure(err.getMessage());
+                });
+    }
+
+    public static void deleteAvailabilitySlot(Activity activity, String docUid, DataCallback callback) {
+        getDb().collection("availabilitySlots").document(docUid).delete()
+                .addOnSuccessListener(activity, nVoid -> {
+                    callback.onSuccess(null);
+                })
+                .addOnFailureListener(e -> {
+                callback.onFailure(e.getMessage());
+            });
+    }
+
+    public static void createSessionRequest(Activity activity, HashMap<String, Object> data, DataCallback callback) {
+        getDb().collection("sessionRequests").add(data)
+                .addOnSuccessListener(activity, docRef -> {
+                    callback.onSuccess(null);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onFailure(e.getMessage());
+                });
+    }
+
+    public static void getSessionRequestsOfType(Activity activity, String key, Object value, QueryCallback callback) {
+        getDb().collection("sessionRequests").whereEqualTo(key, value).get()
+                .addOnSuccessListener(activity, callback::onSuccess)
+                .addOnFailureListener(activity, err -> {
+                    callback.onFailure(err.getMessage());
+                });
+    }
+
+    public static void updateSessionRequest(Activity activity, String docUid, HashMap<String, Object> data, DataCallback callback) {
+        getDb().collection("sessionRequests").document(docUid).update(data)
+                .addOnSuccessListener(activity, nVoid -> {
+                    callback.onSuccess(null);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onFailure(e.getMessage());
+                });
+    }
+
+
+
 }
