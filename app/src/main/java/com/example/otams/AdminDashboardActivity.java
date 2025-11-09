@@ -142,7 +142,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateCurrentList() {
-        DataManager.getDataOfType(AdminDashboardActivity.this, "isPending", true, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(AdminDashboardActivity.this, "users", "isPending", true, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars
@@ -217,7 +217,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateDeniedList() {
-        DataManager.getDataOfType(AdminDashboardActivity.this, "isDenied", true, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(AdminDashboardActivity.this, "users", "isDenied", true, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars
@@ -274,7 +274,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateApprovedList() {
-        DataManager.getDataOfType(AdminDashboardActivity.this, "isAccepted", true, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(AdminDashboardActivity.this, "users", "isAccepted", true, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars

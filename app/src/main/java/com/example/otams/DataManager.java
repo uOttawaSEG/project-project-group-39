@@ -57,15 +57,16 @@ public class DataManager {
                 });
     }
 
-    public static void getDataOfType(Activity activity, String key, Object value, QueryCallback callback) {
+    public static void getDataOfType(Activity activity, String collectionName, String key, Object value, QueryCallback callback) {
         // Retrieve the data where the key = value
-        getDb().collection("users").whereEqualTo(key, value).get()
+        getDb().collection(collectionName).whereEqualTo(key, value).get()
                 .addOnSuccessListener(activity, callback::onSuccess)
                 .addOnFailureListener(activity, err -> {
                     Toast.makeText(activity, err.getMessage(), Toast.LENGTH_LONG).show();
                     callback.onFailure(null);
                 });
     }
+
     public static void createData(Activity activity, HashMap<String, Object> data, DataCallback callback) {
         // Retrieve the current user
         FirebaseUser currentUser = AuthManager.getCurrentUser();
@@ -99,7 +100,6 @@ public class DataManager {
                     }
                 });
     }
-
 
     public static void updateData(Activity activity, String docUid, HashMap<String, Object> data, DataCallback callback) {
         getDb().collection("users").document(docUid).update(data)
