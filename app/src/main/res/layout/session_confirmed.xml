@@ -10,10 +10,10 @@
         android:id="@+id/backButt"
         android:layout_width="@dimen/back_size"
         android:layout_height="@dimen/back_size"
-        android:contentDescription="@string/back_button_description"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/back_button_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/return_button" />

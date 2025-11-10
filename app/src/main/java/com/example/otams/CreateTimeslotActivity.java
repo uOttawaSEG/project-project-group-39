@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,7 +52,6 @@ public class CreateTimeslotActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
 
         // DATE PICKER
-
         datePickerButton.setOnClickListener(v -> {
             Calendar c = Calendar.getInstance();
 
@@ -125,12 +125,11 @@ public class CreateTimeslotActivity extends AppCompatActivity {
             int startDay = startDateTime.get(Calendar.DATE);
             int endDay = endDateTime.get(Calendar.DATE);
 
-
             if (endTimeMillis <= startTimeMillis) {
-//                if (startDay <= endDay){
-//                    Toast.makeText(this, "Nope!", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
+                if (startDay >= endDay) {
+                    Toast.makeText(this, "End time must be after start time!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Toast.makeText(this, "End time must be after start time.", Toast.LENGTH_SHORT).show();
                 return; // Stop the function
             } else if (startMinute % 30 != 0 || endMinute % 30  != 0){
@@ -141,29 +140,54 @@ public class CreateTimeslotActivity extends AppCompatActivity {
             DataManager.getData(CreateTimeslotActivity.this, new DataManager.DataCallback() {
                 @Override
                 public void onSuccess(DocumentSnapshot data) {
-                    // Now create the data entry for the timeslot
-                    HashMap<String, Object> newData = new HashMap<>();
-
-                    newData.put("startTime", startDateTime.getTime());
-                    newData.put("endTime", endDateTime.getTime());
-                    newData.put("isAvailable", true);
-                    newData.put("requiresApproval", !isAutoApprove);
-                    newData.put("tutorId", data.getId());
-                    newData.put("isPending", true);
-
-                    DataManager.createData(CreateTimeslotActivity.this, "slots", true, newData, new DataManager.DataCallback() {
+                    DataManager.getDataOfType(CreateTimeslotActivity.this, "slots", "tutorId", data.getId(), new DataManager.QueryCallback() {
                         @Override
-                        public void onSuccess(DocumentSnapshot data) {
-                            Toast.makeText(CreateTimeslotActivity.this, "Session Created!", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(CreateTimeslotActivity.this, TutorDashboardActivity.class);
-                            startActivity(intent);
-                            finish();
+                        public void onSuccess(QuerySnapshot slotsData) {
+                            for (DocumentSnapshot document : slotsData) {
+                                Timestamp startTime = document.getTimestamp("startTime");
+                                Timestamp endTime = document.getTimestamp("endTime");
 
+                                if (startTime != null && endTime != null) {
+                                    boolean isBefore = endDateTime.getTime().compareTo(startTime.toDate()) <= 0;
+                                    boolean isAfter = startDateTime.getTime().compareTo(endTime.toDate()) >= 0;
+
+                                    if (!isBefore && !isAfter) {
+                                        Toast.makeText(CreateTimeslotActivity.this, "Date cannot overlap with another time slot", Toast.LENGTH_SHORT).show();
+
+                                        return;
+                                    }
+                                }
+                            }
+
+                            // Now create the data entry for the timeslot
+                            HashMap<String, Object> newData = new HashMap<>();
+
+                            newData.put("startTime", startDateTime.getTime());
+                            newData.put("endTime", endDateTime.getTime());
+                            newData.put("isAvailable", true);
+                            newData.put("requiresApproval", !isAutoApprove);
+                            newData.put("tutorId", data.getId());
+                            newData.put("isPending", true);
+
+//                            DataManager.createData(CreateTimeslotActivity.this, "slots", true, newData, new DataManager.DataCallback() {
+//                                @Override
+//                                public void onSuccess(DocumentSnapshot data) {
+//                                    Toast.makeText(CreateTimeslotActivity.this, "Session Created!", Toast.LENGTH_LONG).show();
+//                                    Intent intent = new Intent(CreateTimeslotActivity.this, TutorDashboardActivity.class);
+//                                    startActivity(intent);
+//                                    finish();
+//                                }
+//
+//                                @Override
+//                                public void onFailure(String errorMessage) {
+//                                    Toast.makeText(CreateTimeslotActivity.this, "Error saving timeslot data: " + errorMessage, Toast.LENGTH_LONG).show();
+//                                }
+//                            });
                         }
 
                         @Override
                         public void onFailure(String errorMessage) {
-                            Toast.makeText(CreateTimeslotActivity.this, "Error saving timeslot data: " + errorMessage, Toast.LENGTH_LONG).show();
+                            Toast.makeText(CreateTimeslotActivity.this, "Could not retrieve user data " + errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
