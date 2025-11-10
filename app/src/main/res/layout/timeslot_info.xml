@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="#736965"
+    android:backgroundTint="#736965"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/timeslot_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[DATE] | [START_TIME] - [END_TIME]"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/timeslot_approval_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preference: [APPROVAL_PREFERENCE]"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/row_delete_button"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#651d32"
+        android:text="Delete"
+        android:textColor="@color/white" />
+
+</LinearLayout>

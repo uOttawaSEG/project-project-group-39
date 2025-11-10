@@ -142,7 +142,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateCurrentList() {
-        DataManager.getDataOfType(AdminDashboardActivity.this, "isPending", true, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(AdminDashboardActivity.this, "users", "isPending", true, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars
@@ -166,7 +166,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                     textViewName.setOnClickListener(v -> showUserInfoDialog(document));
 
                     approveBtn.setOnClickListener(v -> {
-                        DataManager.updateData(AdminDashboardActivity.this, document.getId(), new HashMap<String, Object>() {{
+                        DataManager.updateData(AdminDashboardActivity.this, "users", document.getId(), new HashMap<String, Object>() {{
                             put("isPending", false);
                             put("isDenied", false); // just in case it was denied before
                             put("isAccepted", true);
@@ -186,7 +186,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                     });
 
                     denyBtn.setOnClickListener(v -> {
-                        DataManager.updateData(AdminDashboardActivity.this, document.getId(), new HashMap<String, Object>() {{
+                        DataManager.updateData(AdminDashboardActivity.this, "users", document.getId(), new HashMap<String, Object>() {{
                             put("isPending", false);
                             put("isDenied", true);
                             put("isAccepted", false);
@@ -217,7 +217,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateDeniedList() {
-        DataManager.getDataOfType(AdminDashboardActivity.this, "isDenied", true, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(AdminDashboardActivity.this, "users", "isDenied", true, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars
@@ -243,7 +243,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                     textViewName.setOnClickListener(v -> showUserInfoDialog(document));
 
                     approveBtn.setOnClickListener(v -> {
-                        DataManager.updateData(AdminDashboardActivity.this, document.getId(), new HashMap<String, Object>() {{
+                        DataManager.updateData(AdminDashboardActivity.this, "users", document.getId(), new HashMap<String, Object>() {{
                             put("isPending", false);
                             put("isDenied", false);
                             put("isAccepted", true);
@@ -274,7 +274,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateApprovedList() {
-        DataManager.getDataOfType(AdminDashboardActivity.this, "isAccepted", true, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(AdminDashboardActivity.this, "users", "isAccepted", true, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars

@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 import java.util.HashMap;
@@ -167,8 +168,6 @@ public class RegisterActivity extends AppCompatActivity {
                 data.put("role", role);
                 data.put("isPending", true);
 
-
-
                 if (role.equals("Student")) {
                     data.put("program", program.getText().toString().trim());
                 } else {
@@ -176,25 +175,32 @@ public class RegisterActivity extends AppCompatActivity {
                     data.put("coursesToTeach", coursesToTeach.getText().toString().trim());
                 }
 
+                FirebaseMessaging.getInstance().getToken()
+                        .addOnCompleteListener(tokenTask -> {
+                            if (tokenTask.isSuccessful() && tokenTask.getResult() != null) {
+                                String fcmToken = tokenTask.getResult();
+                                data.put("fcmToken", fcmToken);
+                            }
 
-                // Create it in the database
-                DataManager.createData(RegisterActivity.this, data, new DataManager.DataCallback() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot data) {
-                        Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(RegisterActivity.this, "Please wait for your request to be reviewed by an administrator.", Toast.LENGTH_LONG).show();
-                        AuthManager.logout();
-                        Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
+                            // Create it in the database (regardless of FCM output)
+                            DataManager.createData(RegisterActivity.this, "users", data, new DataManager.DataCallback() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot data) {
+                                    Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterActivity.this, "Please wait for your request to be reviewed by an administrator.", Toast.LENGTH_LONG).show();
+                                    AuthManager.logout();
+                                    Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
 
-                    @Override
-                    public void onFailure(String errorMessage) {
-                        Toast.makeText(RegisterActivity.this, "Error saving user data: " + errorMessage, Toast.LENGTH_LONG).show();
-                    }
-                });
+                                @Override
+                                public void onFailure(String errorMessage) {
+                                    Toast.makeText(RegisterActivity.this, "Error saving user data: " + errorMessage, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        });
             }
 
             @Override

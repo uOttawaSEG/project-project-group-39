@@ -6,7 +6,6 @@
     android:background="#908681"
     android:layout_height="match_parent">
 
-
     <TextView
         android:id="@+id/textView3"
         android:layout_width="273dp"
@@ -22,19 +21,143 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.142" />
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/listSelection"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#19625656"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:tabIconTint="@color/OurRED"
+        app:tabIndicatorColor="#651d32"
+        app:tabRippleColor="#05444542"
+        app:tabSelectedTextColor="#651d32">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/upcomingTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upcoming" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/pastTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Past" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/timeslotsTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Timeslots" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/pendingRequestsTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pending Requests" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <ScrollView
+        android:id="@+id/upcomingList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"  android:scrollbarStyle="outsideInset"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/createTimeslotButton" app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+
+        <LinearLayout
+            android:id="@+id/upcomingListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="visible" />
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/pastList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbarStyle="outsideInset"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/createTimeslotButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+
+        <LinearLayout
+            android:id="@+id/pastListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp" />
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/timeslotsList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbarStyle="outsideInset"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/createTimeslotButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+
+        <LinearLayout
+            android:id="@+id/timeslotsListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp" />
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/pendingRequestsList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbarStyle="outsideInset"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/createTimeslotButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+
+        <LinearLayout
+            android:id="@+id/pendingRequestsListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/createTimeslotButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#651d32"
+        android:text="Add New Slot"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/logoutButton"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#651d32"
         android:text="Logout"
         android:textSize="15sp"
-        android:backgroundTint="#651d32"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.92" />
-
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

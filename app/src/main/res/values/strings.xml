@@ -28,4 +28,15 @@
     <string name="current_tab">Current</string>
     <string name="denied_tab">Denied</string>
     <string name="approved_tab">Approved</string>
+    <string name="create_slot">Create Slot</string>
+    <string name="select_end_time">Select End Time:</string>
+    <string name="select_start_time">Select Start Time:</string>
+    <string name="create_new_availability_slot">Create New Availability Slot</string>
+    <string name="start_time">Start Time</string>
+    <string name="manual_approval">Manual Approval</string>
+    <string name="end_time">End Time</string>
+    <string name="date">Date</string>
+    <string name="select_date">Select Date:</string>
+    <string name="session_approval_preference">Session Approval Preference:</string>
+    <string name="auto_approve">Auto-Approve</string>
 </resources>

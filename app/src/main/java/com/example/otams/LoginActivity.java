@@ -52,22 +52,26 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(DocumentSnapshot data) {
                             // Check their request status
-                            if ((Objects.equals(data.getBoolean("isPending"), true) || Objects.equals(data.getBoolean("isDenied"), true)) && !data.getBoolean("isAccepted")) {
-                                AuthManager.logout();
+//                            if ((Objects.equals(data.getBoolean("isPending"), true) || Objects.equals(data.getBoolean("isDenied"), true)) && !data.getBoolean("isAccepted")) {
+//                                //AuthManager.logout();
+//
+//                                if (Objects.equals(data.getBoolean("isDenied"), true)) {
+//                                    Toast.makeText(null, "Your request has been denied by the administrator", Toast.LENGTH_LONG).show();
+//                                    Toast.makeText(null, "Contact us at 613-415-5158 for more information", Toast.LENGTH_LONG).show();
+//                                } else {
+//                                    Toast.makeText(null, "Your request has not been reviewed yet, Contact us at 613-415-5158 for more information", Toast.LENGTH_LONG).show();
+//                                }
+//
+//                                return;
+//                            } else {
+//                                String role = data.getString("role");
+//
+//                                goToWelcome(role != null ? role : "Student");
+//                            }
 
-                                if (Objects.equals(data.getBoolean("isDenied"), true)) {
-                                    Toast.makeText(LoginActivity.this, "Your request has been denied by the administrator", Toast.LENGTH_LONG).show();
-                                    Toast.makeText(LoginActivity.this, "Contact us at 613-415-5158 for more information", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Your request has not been reviewed yet", Toast.LENGTH_LONG).show();
-                                }
+                            String role = data.getString("role");
 
-                                return;
-                            } else {
-                                String role = data.getString("role");
-
-                                goToWelcome(role != null ? role : "Student");
-                            }
+                            goToWelcome(role != null ? role : "Student");
                         }
 
                         @Override
