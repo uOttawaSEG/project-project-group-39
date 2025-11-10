@@ -92,6 +92,12 @@ public class TutorDashboardActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        Button createNewTimeSlotButton = findViewById(R.id.createTimeslotButton);
+        createNewTimeSlotButton.setOnClickListener(v -> {
+            Intent intent = new Intent(TutorDashboardActivity.this, CreateTimeslotActivity.class);
+            startActivity(intent);
+        });
     }
 
     public String formatSlotTime(Timestamp startTime, Timestamp endTime) {
@@ -273,4 +279,5 @@ public class TutorDashboardActivity extends AppCompatActivity {
 
         });
     }
+
 }
