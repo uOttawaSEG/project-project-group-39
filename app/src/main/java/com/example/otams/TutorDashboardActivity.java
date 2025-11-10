@@ -1,7 +1,6 @@
 package com.example.otams;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class TutorDashboardActivity extends AppCompatActivity {
@@ -154,7 +150,17 @@ public class TutorDashboardActivity extends AppCompatActivity {
             createNewTimeSlot.setVisibility(View.VISIBLE);
 
             updateTimeslotsList();
+        } else if (selectedTab.getPosition() == 3) { // Pending
+            // Update visibility
+            upcomingList.setVisibility(View.GONE);
+            pastList.setVisibility(View.GONE);
+            timeslotsList.setVisibility(View.GONE);
+            pendingList.setVisibility(View.VISIBLE);
+            createNewTimeSlot.setVisibility(View.GONE);
+
+
         }
+
 
     }
 
@@ -190,21 +196,19 @@ public class TutorDashboardActivity extends AppCompatActivity {
                     timeslotDetails.setText(formatSlotTime(startTime, endTime));
                     approvalStatus.setText(String.format("Approval: %s", Boolean.TRUE.equals(requiresApproval) ? "Manual" : "Auto"));
 
-                    deleteBtn.setOnClickListener(v -> {
-                        DataManager.deleteData(TutorDashboardActivity.this, "slots", document.getId(), new DataManager.UpdateCallback() {
-                            @Override
-                            public void onSuccess() {
-                                Toast.makeText(TutorDashboardActivity.this, "Successfully deleted slot", Toast.LENGTH_LONG).show();
+                    deleteBtn.setOnClickListener(v -> DataManager.deleteData(TutorDashboardActivity.this, "slots", document.getId(), new DataManager.UpdateCallback() {
+                        @Override
+                        public void onSuccess() {
+                            Toast.makeText(TutorDashboardActivity.this, "Successfully deleted slot", Toast.LENGTH_LONG).show();
 
-                                updateUpcomingList();
-                            }
+                            updateUpcomingList();
+                        }
 
-                            @Override
-                            public void onFailure(String errorMessage) {
-                                Toast.makeText(TutorDashboardActivity.this, "Error while trying to delete slot: " + errorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    });
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Toast.makeText(TutorDashboardActivity.this, "Error while trying to delete slot: " + errorMessage, Toast.LENGTH_LONG).show();
+                        }
+                    }));
 
                     currentList.addView(timeslot);
                 }
@@ -268,7 +272,7 @@ public class TutorDashboardActivity extends AppCompatActivity {
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars
                 LinearLayout currentList = findViewById(R.id.timeslotsListContainer);
-                LayoutInflater inflater = LayoutInflater.from(TutorDashboardActivity.this);
+                LayoutInflater.from(TutorDashboardActivity.this);
 
                 currentList.removeAllViews();
 
