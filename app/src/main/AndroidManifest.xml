@@ -30,7 +30,8 @@
         <activity android:name=".AdminDashboardActivity"/>
         <activity android:name=".PendingRequestActivity"/>
         <activity android:name=".CreateTimeslotActivity"/>
-
+        <activity android:name=".SessionConfirmedActivity"/>
+        <activity android:name=".SessionRequestActivity"/>
 
     </application>
 

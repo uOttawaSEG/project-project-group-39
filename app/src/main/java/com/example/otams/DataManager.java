@@ -52,8 +52,16 @@ public class DataManager {
 
         getDb().collection("users").document(uid).get()
                 .addOnSuccessListener(activity, callback::onSuccess)
-                .addOnFailureListener(activity, doc -> {
-                    callback.onFailure(null);
+                .addOnFailureListener(activity, err -> {
+                    callback.onFailure(err.getMessage());
+                });
+    }
+
+    public static void getUserData(Activity activity, String uid, DataCallback callback) {
+        getDb().collection("users").document(uid).get()
+                .addOnSuccessListener(activity, callback::onSuccess)
+                .addOnFailureListener(activity, err -> {
+                    callback.onFailure(err.getMessage());
                 });
     }
 

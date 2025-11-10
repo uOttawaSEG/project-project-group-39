@@ -129,7 +129,6 @@ public class TutorDashboardActivity extends AppCompatActivity {
             pendingList.setVisibility(View.GONE);
             createNewTimeSlot.setVisibility(View.GONE);
 
-
             updateUpcomingList();
         } else if (selectedTab.getPosition() == 1) { // Past
             // Update visibility
@@ -138,7 +137,6 @@ public class TutorDashboardActivity extends AppCompatActivity {
             timeslotsList.setVisibility(View.GONE);
             pendingList.setVisibility(View.GONE);
             createNewTimeSlot.setVisibility(View.GONE);
-
 
             updatePastList();
         } else if (selectedTab.getPosition() == 2) { // Timeslots
@@ -158,10 +156,8 @@ public class TutorDashboardActivity extends AppCompatActivity {
             pendingList.setVisibility(View.VISIBLE);
             createNewTimeSlot.setVisibility(View.GONE);
 
-
+            updatePendingList();
         }
-
-
     }
 
     protected void updateUpcomingList() {
@@ -179,8 +175,9 @@ public class TutorDashboardActivity extends AppCompatActivity {
                 for (QueryDocumentSnapshot document : data) {
                     // Ensure it's an upcoming slot
                     Timestamp startTime = document.getTimestamp("startTime");
+                    Boolean isAvailable = document.getBoolean("isAvailable");
 
-                    if (startTime == null || startTime.compareTo(Timestamp.now()) < 0) {
+                    if (startTime == null || startTime.compareTo(Timestamp.now()) < 0 || Boolean.FALSE.equals(isAvailable)) {
                         continue;
                     }
 
@@ -282,33 +279,125 @@ public class TutorDashboardActivity extends AppCompatActivity {
                     Timestamp startTime = document.getTimestamp("startTime");
                     Boolean isAvailable = document.getBoolean("isAvailable");
                     String bookedBy = document.getString("bookedBy");
+                    Boolean requiresApproval = document.getBoolean("requiresApproval");
+                    Boolean isApproved = document.getBoolean("isApproved");
 
-                    if (startTime == null || startTime.compareTo(Timestamp.now()) < 0 || !Boolean.FALSE.equals(isAvailable) || bookedBy == null) {
-                        return;
+                    if (startTime == null || startTime.compareTo(Timestamp.now()) < 0 || Boolean.TRUE.equals(isAvailable) || bookedBy == null) {
+                        continue;
                     }
 
-                    // Create the slot
-                    View timeslot = inflater.inflate(R.layout.timeslot_info, currentList, false);
-                    TextView timeslotDetails = timeslot.findViewById(R.id.timeslot_details);
-                    TextView approvalStatus = timeslot.findViewById(R.id.timeslot_approval_status);
-                    Button deleteBtn = timeslot.findViewById(R.id.row_delete_button);
+                    if (Boolean.TRUE.equals(requiresApproval) && !Boolean.TRUE.equals(isApproved)) {
+                        continue;
+                    }
 
-                    Timestamp endTime = document.getTimestamp("endTime");
-                    Boolean requiresApproval = document.getBoolean("requiresApproval");
+                    // Retrieve the data first
+                    DataManager.getUserData(TutorDashboardActivity.this, bookedBy, new DataManager.DataCallback() {
+                       @Override
+                       public void onSuccess(DocumentSnapshot userData) {
+                           // Create the slot
+                           View timeslot = inflater.inflate(R.layout.sessions_info, currentList, false);
+                           TextView timeslotDetails = timeslot.findViewById(R.id.session_date_time);
+                           TextView studentDetails = timeslot.findViewById(R.id.session_student_info);
+                           TextView approvalStatus = timeslot.findViewById(R.id.session_status_indicator);
 
-                    timeslotDetails.setText(formatSlotTime(startTime, endTime));
-                    approvalStatus.setText(String.format("Approval: %s", Boolean.TRUE.equals(requiresApproval) ? "Manual" : "Auto"));
+                           Timestamp endTime = document.getTimestamp("endTime");
+                           String formattedTime = formatSlotTime(startTime, endTime);
 
-                    deleteBtn.setVisibility(View.GONE);
+                           timeslotDetails.setText(formattedTime);
+                           studentDetails.setText(userData.getString("firstName") + " " + userData.getString("lastName"));
+                           approvalStatus.setText("Status: Approved");
 
-                    currentList.addView(timeslot);
+                           timeslot.setOnClickListener(click -> {
+                               Intent intent = new Intent(TutorDashboardActivity.this, SessionConfirmedActivity.class);
+                               intent.putExtra("bookedBy", bookedBy);
+                               intent.putExtra("formattedTime", formattedTime);
+                               intent.putExtra("sessionId", document.getId());
+                               startActivity(intent);
+                               finish();
+                           });
+
+                           currentList.addView(timeslot);
+                       }
+
+                       @Override
+                       public void onFailure(String errorMessage) {
+                           Toast.makeText(TutorDashboardActivity.this, "Could not fetch booker data " + errorMessage, Toast.LENGTH_LONG).show();
+                       }
+                    });
                 }
             }
             public void onFailure(String errorMessage) {
                 Toast.makeText(TutorDashboardActivity.this, "Error while trying to load timeslots", Toast.LENGTH_LONG).show();
             }
-
         });
     }
 
+    protected void updatePendingList() {
+        DataManager.getDataOfType(TutorDashboardActivity.this, "slots", "tutorId", tutorId, new DataManager.QueryCallback() {
+            @Override
+            public void onSuccess(QuerySnapshot data) {
+                // Default Vars
+                LinearLayout currentList = findViewById(R.id.pendingRequestsListContainer);
+                LayoutInflater inflater = LayoutInflater.from(TutorDashboardActivity.this);
+
+                currentList.removeAllViews();
+
+                // Add in all the templates
+                for (QueryDocumentSnapshot document : data) {
+                    // Ensure it's an upcoming slot
+                    Timestamp startTime = document.getTimestamp("startTime");
+                    Boolean isAvailable = document.getBoolean("isAvailable");
+                    String bookedBy = document.getString("bookedBy");
+                    Boolean requiresApproval = document.getBoolean("requiresApproval");
+                    Boolean isApproved = document.getBoolean("isApproved");
+
+                    if (startTime == null || startTime.compareTo(Timestamp.now()) < 0 || Boolean.TRUE.equals(isAvailable) || bookedBy == null) {
+                        continue;
+                    }
+
+                    if (Boolean.FALSE.equals(requiresApproval) || Boolean.TRUE.equals(isApproved)) {
+                        continue;
+                    }
+
+                    // Retrieve the data first
+                    DataManager.getUserData(TutorDashboardActivity.this, bookedBy, new DataManager.DataCallback() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot userData) {
+                            // Create the slot
+                            View timeslot = inflater.inflate(R.layout.sessions_info, currentList, false);
+                            TextView timeslotDetails = timeslot.findViewById(R.id.session_date_time);
+                            TextView studentDetails = timeslot.findViewById(R.id.session_student_info);
+                            TextView approvalStatus = timeslot.findViewById(R.id.session_status_indicator);
+
+                            Timestamp endTime = document.getTimestamp("endTime");
+                            String formattedTime = formatSlotTime(startTime, endTime);
+
+                            timeslotDetails.setText(formattedTime);
+                            studentDetails.setText(userData.getString("firstName") + " " + userData.getString("lastName"));
+                            approvalStatus.setText("Click to review");
+
+                            timeslot.setOnClickListener(click -> {
+                                Intent intent = new Intent(TutorDashboardActivity.this, SessionRequestActivity.class);
+                                intent.putExtra("bookedBy", bookedBy);
+                                intent.putExtra("formattedTime", formattedTime);
+                                intent.putExtra("sessionId", document.getId());
+                                startActivity(intent);
+                                finish();
+                            });
+
+                            currentList.addView(timeslot);
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Toast.makeText(TutorDashboardActivity.this, "Could not fetch booker data " + errorMessage, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+            public void onFailure(String errorMessage) {
+                Toast.makeText(TutorDashboardActivity.this, "Error while trying to load timeslots", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }
