@@ -122,7 +122,15 @@ public class CreateTimeslotActivity extends AppCompatActivity {
             int startMinute = startDateTime.get(Calendar.MINUTE);
             int endMinute = endDateTime.get(Calendar.MINUTE);
 
+            int startDay = startDateTime.get(Calendar.DATE);
+            int endDay = endDateTime.get(Calendar.DATE);
+
+
             if (endTimeMillis <= startTimeMillis) {
+//                if (startDay <= endDay){
+//                    Toast.makeText(this, "Nope!", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
                 Toast.makeText(this, "End time must be after start time.", Toast.LENGTH_SHORT).show();
                 return; // Stop the function
             } else if (startMinute % 30 != 0 || endMinute % 30  != 0){
@@ -146,7 +154,10 @@ public class CreateTimeslotActivity extends AppCompatActivity {
                     DataManager.createData(CreateTimeslotActivity.this, "slots", true, newData, new DataManager.DataCallback() {
                         @Override
                         public void onSuccess(DocumentSnapshot data) {
-                            Toast.makeText(CreateTimeslotActivity.this, "Yay", Toast.LENGTH_LONG).show();
+                            Toast.makeText(CreateTimeslotActivity.this, "Session Created!", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(CreateTimeslotActivity.this, TutorDashboardActivity.class);
+                            startActivity(intent);
+                            finish();
 
                         }
 
