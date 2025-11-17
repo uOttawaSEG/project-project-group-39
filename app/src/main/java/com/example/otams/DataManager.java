@@ -1,19 +1,16 @@
 package com.example.otams;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.widget.Toast;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.w3c.dom.Document;
-//p
 import java.util.HashMap;
+import java.util.List;
 
 public class DataManager {
     // Default Vars
@@ -34,6 +31,26 @@ public class DataManager {
     public interface UpdateCallback {
         void onSuccess();
         void onFailure(String errorMessage);
+    }
+
+    public enum QueryType {
+        EQUAL_TO,            // whereEqualTo(key, value)
+        GREATER_THAN,        // whereGreaterThan(key, value)
+        LESS_THAN,           // whereLessThan(key, value)
+        ARRAY_CONTAINS,      // whereArrayContains(key, value)
+        CONTAINS_STRING      // Custom: Requires start/end filters (for full-text search, look into external solutions)
+    }
+
+    public static class QueryParam {
+        public final String key;
+        public final Object value;
+        public final QueryType type;
+
+        public QueryParam(String key, Object value, QueryType type) {
+            this.key = key;
+            this.value = value;
+            this.type = type;
+        }
     }
 
     // Main Methods
@@ -65,9 +82,37 @@ public class DataManager {
                 });
     }
 
-    public static void getDataOfType(Activity activity, String collectionName, String key, Object value, QueryCallback callback) {
-        // Retrieve the data where the key = value
-        getDb().collection(collectionName).whereEqualTo(key, value).get()
+    public static void getDataOfType(Activity activity, String collectionName, List<QueryParam> queryParams, QueryCallback callback) {
+        Query query = getDb().collection(collectionName);
+
+        // Iterate through the array of query parameters
+        for (QueryParam param : queryParams) {
+            switch (param.type) {
+                case EQUAL_TO:
+                    query = query.whereEqualTo(param.key, param.value);
+                    break;
+                case GREATER_THAN:
+                    query = query.whereGreaterThan(param.key, param.value);
+                    break;
+                case LESS_THAN:
+                    query = query.whereLessThan(param.key, param.value);
+                    break;
+                case ARRAY_CONTAINS:
+                    query = query.whereArrayContains(param.key, param.value);
+                    break;
+                case CONTAINS_STRING:
+                    // Prefix search implementation (since true substring search isn't native)
+                    if (param.value instanceof String) {
+                        String prefix = (String) param.value;
+                        query = query.whereGreaterThanOrEqualTo(param.key, prefix)
+                                .whereLessThanOrEqualTo(param.key, prefix + "\uf8ff");
+                    }
+                    break;
+            }
+        }
+
+        // Execute the final chained query
+        query.get()
                 .addOnSuccessListener(activity, callback::onSuccess)
                 .addOnFailureListener(activity, err -> {
                     Toast.makeText(activity, err.getMessage(), Toast.LENGTH_LONG).show();

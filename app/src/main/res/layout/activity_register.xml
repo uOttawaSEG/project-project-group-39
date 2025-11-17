@@ -163,16 +163,16 @@
         android:id="@+id/coursesToTeach"
         android:layout_width="216dp"
         android:layout_height="0dp"
-        android:visibility="gone"
         android:layout_marginTop="@dimen/input_spacing"
-        android:hint="@string/courses_to_teach"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="@string/courses_to_teach"
         android:inputType="textMultiLine"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/registrationButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/highestLevelOfStudy"
-        app:layout_constraintBottom_toTopOf="@+id/registrationButton" />
+        app:layout_constraintTop_toBottomOf="@+id/highestLevelOfStudy" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

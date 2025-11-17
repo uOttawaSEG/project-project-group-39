@@ -6,6 +6,99 @@
     android:background="#908681"
     android:layout_height="match_parent">
 
+    <ScrollView
+        android:id="@+id/bookNewList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="60dp"
+        android:scrollbarStyle="outsideInset"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/logoutButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+
+        <LinearLayout
+            android:id="@+id/bookNewListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="visible"/>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/upcomingList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbarStyle="outsideInset"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+
+        <LinearLayout
+            android:id="@+id/upcomingListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp" />
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/previousList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbarStyle="outsideInset"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection">
+
+        <LinearLayout
+            android:id="@+id/previousListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp" />
+    </ScrollView>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/listSelection"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#19625656"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:tabIconTint="@color/OurRED"
+        app:tabIndicatorColor="#651d32"
+        app:tabRippleColor="#05444542"
+        app:tabSelectedTextColor="#651d32">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/bookNew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Book New" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/upcoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upcoming" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Previous" />
+
+    </com.google.android.material.tabs.TabLayout>
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="273dp"
@@ -35,5 +128,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         app:layout_constraintVertical_bias="0.92" />
+
+    <SearchView
+        android:id="@+id/courseSearch"
+        android:layout_width="414dp"
+        android:layout_height="57dp"
+        app:layout_constraintEnd_toEndOf="@+id/listSelection"
+        app:layout_constraintStart_toStartOf="@+id/listSelection"
+        app:layout_constraintTop_toBottomOf="@+id/listSelection" >
+
+    </SearchView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

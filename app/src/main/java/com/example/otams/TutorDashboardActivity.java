@@ -19,6 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -161,7 +162,9 @@ public class TutorDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateUpcomingList() {
-        DataManager.getDataOfType(TutorDashboardActivity.this, "slots", "tutorId", tutorId, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(TutorDashboardActivity.this, "slots", new ArrayList<>() {{
+            add(new DataManager.QueryParam("tutorId", tutorId, DataManager.QueryType.EQUAL_TO));
+        }}, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars
@@ -183,9 +186,9 @@ public class TutorDashboardActivity extends AppCompatActivity {
 
                     // Create the slot
                     View timeslot = inflater.inflate(R.layout.timeslot_info, currentList, false);
-                    TextView timeslotDetails = timeslot.findViewById(R.id.timeslot_details);
-                    TextView approvalStatus = timeslot.findViewById(R.id.timeslot_approval_status);
-                    Button deleteBtn = timeslot.findViewById(R.id.row_delete_button);
+                    TextView timeslotDetails = timeslot.findViewById(R.id.highestLevelEducation);
+                    TextView approvalStatus = timeslot.findViewById(R.id.highestLevelEducation);
+                    Button deleteBtn = timeslot.findViewById(R.id.view);
 
                     Timestamp endTime = document.getTimestamp("endTime");
                     Boolean requiresApproval = document.getBoolean("requiresApproval");
@@ -219,7 +222,9 @@ public class TutorDashboardActivity extends AppCompatActivity {
     }
 
     protected void updatePastList() {
-        DataManager.getDataOfType(TutorDashboardActivity.this, "slots", "tutorId", tutorId, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(TutorDashboardActivity.this, "slots", new ArrayList<>() {{
+            add(new DataManager.QueryParam("tutorId", tutorId, DataManager.QueryType.EQUAL_TO));
+        }}, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars
@@ -240,9 +245,9 @@ public class TutorDashboardActivity extends AppCompatActivity {
 
                     // Create the slot
                     View timeslot = inflater.inflate(R.layout.timeslot_info, currentList, false);
-                    TextView timeslotDetails = timeslot.findViewById(R.id.timeslot_details);
-                    TextView approvalStatus = timeslot.findViewById(R.id.timeslot_approval_status);
-                    Button deleteBtn = timeslot.findViewById(R.id.row_delete_button);
+                    TextView timeslotDetails = timeslot.findViewById(R.id.highestLevelEducation);
+                    TextView approvalStatus = timeslot.findViewById(R.id.highestLevelEducation);
+                    Button deleteBtn = timeslot.findViewById(R.id.view);
 
                     Timestamp endTime = document.getTimestamp("endTime");
                     Boolean requiresApproval = document.getBoolean("requiresApproval");
@@ -264,7 +269,9 @@ public class TutorDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateTimeslotsList() {
-        DataManager.getDataOfType(TutorDashboardActivity.this, "slots", "tutorId", tutorId, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(TutorDashboardActivity.this, "slots", new ArrayList<>() {{
+            add(new DataManager.QueryParam("tutorId", tutorId, DataManager.QueryType.EQUAL_TO));
+        }}, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars
@@ -333,7 +340,9 @@ public class TutorDashboardActivity extends AppCompatActivity {
     }
 
     protected void updatePendingList() {
-        DataManager.getDataOfType(TutorDashboardActivity.this, "slots", "tutorId", tutorId, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(TutorDashboardActivity.this, "slots", new ArrayList<>() {{
+            add(new DataManager.QueryParam("tutorId", tutorId, DataManager.QueryType.EQUAL_TO));
+        }}, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars

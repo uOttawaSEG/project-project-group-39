@@ -16,10 +16,10 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/highestLevelEducation"
+            android:id="@+id/tutorName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[DATE] | [START_TIME] - [END_TIME]"
+            android:text="Elizabeth Maltais"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -28,7 +28,7 @@
             android:id="@+id/highestLevelEducation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Preference: [APPROVAL_PREFERENCE]"
+            android:text="highestLevelEducation"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
 
@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#651d32"
-        android:text="Delete"
+        android:text="View"
         android:textColor="@color/white" />
 
 </LinearLayout>

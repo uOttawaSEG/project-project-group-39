@@ -19,7 +19,7 @@
     <string name="login_to_your_account">Login To Your Account!</string>
     <string name="login">Login</string>
     <string name="program_of_study">Program of Study</string>
-    <string name="courses_to_teach">Courses to Teach</string>
+    <string name="courses_to_teach">Courses to Teach, separated by comma</string>
     <string name="highest_level_of_study">Highest Level of Study</string>
     <string name="adminWelcomeMessage">Hey, welcome to admin dashboard</string>
     <string name="logoutText">Logout</string>

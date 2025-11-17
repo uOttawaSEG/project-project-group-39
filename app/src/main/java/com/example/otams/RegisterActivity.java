@@ -20,7 +20,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -172,7 +174,18 @@ public class RegisterActivity extends AppCompatActivity {
                     data.put("program", program.getText().toString().trim());
                 } else {
                     data.put("highestLevelOfStudy", highestLevelOfStudy.getText().toString().trim());
-                    data.put("coursesToTeach", coursesToTeach.getText().toString().trim());
+
+                    String[] coursesArray = coursesToTeach.getText().toString().trim().toLowerCase().split(",");
+                    List<String> cleanedCourses = new java.util.ArrayList<>();
+
+                    for (String course : coursesArray) {
+                        String trimmedCourse = course.trim();
+                        if (!trimmedCourse.isEmpty()) {
+                            cleanedCourses.add(trimmedCourse);
+                        }
+                    }
+
+                    data.put("coursesToTeach", cleanedCourses);
                 }
 
                 FirebaseMessaging.getInstance().getToken()

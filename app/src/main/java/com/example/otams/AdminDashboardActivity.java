@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AdminDashboardActivity extends AppCompatActivity {
@@ -142,7 +143,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateCurrentList() {
-        DataManager.getDataOfType(AdminDashboardActivity.this, "users", "isPending", true, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(AdminDashboardActivity.this, "users", new ArrayList<>() {{
+                add(new DataManager.QueryParam("isPending", true, DataManager.QueryType.EQUAL_TO));
+        }}, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars
@@ -217,7 +220,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateDeniedList() {
-        DataManager.getDataOfType(AdminDashboardActivity.this, "users", "isDenied", true, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(AdminDashboardActivity.this, "users", new ArrayList<>() {{
+            add(new DataManager.QueryParam("isDenied", true, DataManager.QueryType.EQUAL_TO));
+        }}, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars
@@ -274,7 +279,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     protected void updateApprovedList() {
-        DataManager.getDataOfType(AdminDashboardActivity.this, "users", "isAccepted", true, new DataManager.QueryCallback() {
+        DataManager.getDataOfType(AdminDashboardActivity.this, "users", new ArrayList<>() {{
+            add(new DataManager.QueryParam("isAccepted", true, DataManager.QueryType.EQUAL_TO));
+        }}, new DataManager.QueryCallback() {
             @Override
             public void onSuccess(QuerySnapshot data) {
                 // Default Vars
