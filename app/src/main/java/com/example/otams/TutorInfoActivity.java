@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Document;
@@ -108,28 +109,59 @@ public class TutorInfoActivity extends AppCompatActivity {
                                             return;
                                         }
 
-                                        DataManager.updateData(TutorInfoActivity.this, "slots", document.getId(), new HashMap<>() {{
-                                            put("isAvailable", false);
-                                            put("bookedBy", currentUser.getUid());
-                                            put("isDenied", false);
-
-                                            if (Boolean.FALSE.equals(requiresApproval)) {
-                                                put("isApproved", true);
-                                                put("isPending", false);
-                                            } else {
-                                                put("isPending", true);
-                                            }
-                                        }}, new DataManager.DataCallback() {
+                                        DataManager.getDataOfType(TutorInfoActivity.this, "slots", new ArrayList<>() {{
+                                            add(new DataManager.QueryParam("bookedBy", currentUser.getUid(), DataManager.QueryType.EQUAL_TO));
+                                        }}, new DataManager.QueryCallback() {
                                             @Override
-                                            public void onSuccess(DocumentSnapshot data) {
-                                                Toast.makeText(TutorInfoActivity.this, "Successfully booked slot", Toast.LENGTH_LONG).show();
+                                            public void onSuccess(QuerySnapshot bookedSlots) {
+                                                // Default Vars
+                                                Timestamp newSlotStart = slotData.getTimestamp("startTime");
+                                                Timestamp newSlotEnd = slotData.getTimestamp("endTime");
 
-                                                currentList.removeView(timeslot);
+                                                // Check for overlaps
+                                                for (QueryDocumentSnapshot existingSlot : bookedSlots) {
+                                                    Timestamp existingStart = existingSlot.getTimestamp("startTime");
+                                                    Timestamp existingEnd = existingSlot.getTimestamp("endTime");
+
+                                                    if (existingStart == null || existingEnd == null || newSlotStart == null || newSlotEnd == null) continue;
+
+                                                    // Overlap condition: (StartA < EndB) and (EndA > StartB)
+                                                    if (newSlotStart.compareTo(existingEnd) < 0 && newSlotEnd.compareTo(existingStart) > 0) {
+                                                        Toast.makeText(TutorInfoActivity.this, "This timeslot overlaps with another of your bookings", Toast.LENGTH_LONG).show();
+
+                                                        return;
+                                                    }
+                                                }
+
+                                                DataManager.updateData(TutorInfoActivity.this, "slots", document.getId(), new HashMap<>() {{
+                                                    put("isAvailable", false);
+                                                    put("bookedBy", currentUser.getUid());
+                                                    put("isDenied", false);
+
+                                                    if (Boolean.FALSE.equals(requiresApproval)) {
+                                                        put("isApproved", true);
+                                                        put("isPending", false);
+                                                    } else {
+                                                        put("isPending", true);
+                                                    }
+                                                }}, new DataManager.DataCallback() {
+                                                    @Override
+                                                    public void onSuccess(DocumentSnapshot data) {
+                                                        Toast.makeText(TutorInfoActivity.this, "Successfully booked slot", Toast.LENGTH_LONG).show();
+
+                                                        currentList.removeView(timeslot);
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(String errorMessage) {
+                                                        Toast.makeText(TutorInfoActivity.this, "Failed to book slot: " + errorMessage, Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
                                             }
 
                                             @Override
                                             public void onFailure(String errorMessage) {
-                                                Toast.makeText(TutorInfoActivity.this, "Failed to book slot: " + errorMessage, Toast.LENGTH_LONG).show();
+                                                Toast.makeText(TutorInfoActivity.this, "Could not verify existing bookings: " + errorMessage, Toast.LENGTH_LONG).show();
                                             }
                                         });
                                     }
