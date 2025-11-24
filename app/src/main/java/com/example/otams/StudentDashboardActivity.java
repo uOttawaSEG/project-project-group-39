@@ -1,15 +1,20 @@
 package com.example.otams;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.media.session.MediaController;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.RatingBar;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -90,6 +95,56 @@ public class StudentDashboardActivity extends AppCompatActivity {
         });
     }
 
+    protected void showRateDialog(String id) {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.rate_popup);
+
+        Button closeButton = dialog.findViewById(R.id.closeButton);
+        Button submitButton = dialog.findViewById(R.id.submitButton);
+        RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
+
+        DataManager.getDataById(StudentDashboardActivity.this, "users", id, new DataManager.DataCallback() {
+            @Override
+            public void onSuccess(DocumentSnapshot data) {
+                Double totalRating = data.getDouble("totalRating");
+                Double numRatings = data.getDouble("numRatings");
+                Number avgRating = totalRating != null && numRatings != null ? totalRating / numRatings : 0;
+
+                ratingBar.setRating(avgRating.floatValue());
+
+                closeButton.setOnClickListener(v -> dialog.dismiss());
+
+                submitButton.setOnClickListener(v -> {
+                    float ratingValue = ((RatingBar) ratingBar).getRating();
+
+                    DataManager.updateData(StudentDashboardActivity.this, "users", id, new HashMap<>() {{
+                        put("totalRating", totalRating != null ? totalRating + ratingValue : ratingValue);
+                        put("numRatings", numRatings != null ? numRatings + 1 : 1);
+                    }}, new DataManager.DataCallback() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot data) {
+                            dialog.dismiss();
+                            Toast.makeText(StudentDashboardActivity.this, "Successfully Submitted Rating", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Toast.makeText(StudentDashboardActivity.this, "Failed to Submit Rating: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                });
+
+                dialog.show();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(StudentDashboardActivity.this, "Failed to retrieve user data", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     protected void updateCurrentSelection(TabLayout.Tab selectedTab) {
         ScrollView bookNewList = findViewById(R.id.bookNewList);
         ScrollView upcomingList = findViewById(R.id.upcomingList);
@@ -155,7 +210,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
                     Number avgRating = rating != null && numRatings != null ? rating / numRatings : 0;
 
                     tutorNameText.setText(firstName + " " + lastName);
-                    tutorRating.setText(avgRating + " Stars");
+                    tutorRating.setText(Math.ceil(avgRating.floatValue() * 10) / 10 + " Stars");
 
                     viewBtn.setOnClickListener(v -> {
                         Intent intent = new Intent(StudentDashboardActivity.this, TutorInfoActivity.class);
@@ -302,9 +357,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
                     approvalStatus.setText(String.format("Approval: %s", Boolean.TRUE.equals(requiresApproval) ? "Manual" : "Auto"));
                     rateBtn.setText("Rate");
 
-                    rateBtn.setOnClickListener(v -> {
-
-                    });
+                    rateBtn.setOnClickListener(v -> showRateDialog(document.getString("tutorId")));
 
                     currentList.addView(timeslot);
                 }

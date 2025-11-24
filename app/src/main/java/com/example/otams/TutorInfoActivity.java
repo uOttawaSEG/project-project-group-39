@@ -62,7 +62,7 @@ public class TutorInfoActivity extends AppCompatActivity {
                 detailTutorName.setText(tutorName);
                 detailTutorEmail.setText(tutorEmail);
                 detailTutorPhoneNumber.setText(tutorPhoneNumber);
-                detailTutorRating.setText(avgRating.toString() + " Stars");
+                detailTutorRating.setText(Math.ceil(avgRating.floatValue() * 10) / 10 + " Stars");
 
                 // Retrieve slots
                 DataManager.getDataOfType(TutorInfoActivity.this, "slots", new ArrayList<>() {{
