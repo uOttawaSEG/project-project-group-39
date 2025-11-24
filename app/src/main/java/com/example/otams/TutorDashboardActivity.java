@@ -97,7 +97,7 @@ public class TutorDashboardActivity extends AppCompatActivity {
         });
     }
 
-    public String formatSlotTime(Timestamp startTime, Timestamp endTime) {
+    public static String formatSlotTime(Timestamp startTime, Timestamp endTime) {
         if (startTime == null || endTime == null) {
             return "N/A";
         }
@@ -186,8 +186,8 @@ public class TutorDashboardActivity extends AppCompatActivity {
 
                     // Create the slot
                     View timeslot = inflater.inflate(R.layout.timeslot_info, currentList, false);
-                    TextView timeslotDetails = timeslot.findViewById(R.id.highestLevelEducation);
-                    TextView approvalStatus = timeslot.findViewById(R.id.highestLevelEducation);
+                    TextView timeslotDetails = timeslot.findViewById(R.id.timeslotDetails);
+                    TextView approvalStatus = timeslot.findViewById(R.id.requiresApproval);
                     Button deleteBtn = timeslot.findViewById(R.id.view);
 
                     Timestamp endTime = document.getTimestamp("endTime");
@@ -245,8 +245,8 @@ public class TutorDashboardActivity extends AppCompatActivity {
 
                     // Create the slot
                     View timeslot = inflater.inflate(R.layout.timeslot_info, currentList, false);
-                    TextView timeslotDetails = timeslot.findViewById(R.id.highestLevelEducation);
-                    TextView approvalStatus = timeslot.findViewById(R.id.highestLevelEducation);
+                    TextView timeslotDetails = timeslot.findViewById(R.id.timeslotDetails);
+                    TextView approvalStatus = timeslot.findViewById(R.id.requiresApproval);
                     Button deleteBtn = timeslot.findViewById(R.id.view);
 
                     Timestamp endTime = document.getTimestamp("endTime");
@@ -298,7 +298,7 @@ public class TutorDashboardActivity extends AppCompatActivity {
                     }
 
                     // Retrieve the data first
-                    DataManager.getUserData(TutorDashboardActivity.this, bookedBy, new DataManager.DataCallback() {
+                    DataManager.getDataById(TutorDashboardActivity.this, "users", bookedBy, new DataManager.DataCallback() {
                        @Override
                        public void onSuccess(DocumentSnapshot userData) {
                            // Create the slot
@@ -369,7 +369,7 @@ public class TutorDashboardActivity extends AppCompatActivity {
                     }
 
                     // Retrieve the data first
-                    DataManager.getUserData(TutorDashboardActivity.this, bookedBy, new DataManager.DataCallback() {
+                    DataManager.getDataById(TutorDashboardActivity.this, "users", bookedBy, new DataManager.DataCallback() {
                         @Override
                         public void onSuccess(DocumentSnapshot userData) {
                             // Create the slot

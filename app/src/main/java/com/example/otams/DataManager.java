@@ -74,8 +74,8 @@ public class DataManager {
                 });
     }
 
-    public static void getUserData(Activity activity, String uid, DataCallback callback) {
-        getDb().collection("users").document(uid).get()
+    public static void getDataById(Activity activity, String collectionName, String uid, DataCallback callback) {
+        getDb().collection(collectionName).document(uid).get()
                 .addOnSuccessListener(activity, callback::onSuccess)
                 .addOnFailureListener(activity, err -> {
                     callback.onFailure(err.getMessage());

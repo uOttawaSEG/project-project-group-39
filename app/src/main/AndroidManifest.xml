@@ -32,6 +32,7 @@
         <activity android:name=".CreateTimeslotActivity"/>
         <activity android:name=".SessionConfirmedActivity"/>
         <activity android:name=".SessionRequestActivity"/>
+        <activity android:name=".TutorInfoActivity"/>
 
     </application>
 

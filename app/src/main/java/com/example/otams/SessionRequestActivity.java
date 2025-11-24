@@ -35,7 +35,7 @@ public class SessionRequestActivity extends AppCompatActivity {
         String sessionId = intent.getStringExtra("sessionId");
 
         if (bookedBy != null && sessionId != null) {
-            DataManager.getUserData(SessionRequestActivity.this, bookedBy, new DataManager.DataCallback() {
+            DataManager.getDataById(SessionRequestActivity.this, "users", bookedBy, new DataManager.DataCallback() {
                 @Override
                 public void onSuccess(DocumentSnapshot userData) {
                     TextView timeDetails = findViewById(R.id.detail_request_time);

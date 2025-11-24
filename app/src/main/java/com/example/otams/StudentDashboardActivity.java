@@ -14,10 +14,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Document;
+
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class StudentDashboardActivity extends AppCompatActivity {
 
@@ -87,14 +94,30 @@ public class StudentDashboardActivity extends AppCompatActivity {
         ScrollView bookNewList = findViewById(R.id.bookNewList);
         ScrollView upcomingList = findViewById(R.id.upcomingList);
         ScrollView previousList = findViewById(R.id.previousList);
+        SearchView courseSearch = findViewById(R.id.courseSearch);
 
         if (selectedTab.getPosition() == 0) {
             // Update visibility
             bookNewList.setVisibility(View.VISIBLE);
             upcomingList.setVisibility(View.GONE);
             previousList.setVisibility(View.GONE);
+            courseSearch.setVisibility(View.VISIBLE);
 
             updateBookNewList();
+        } else if (selectedTab.getPosition() == 1) {
+            bookNewList.setVisibility(View.GONE);
+            upcomingList.setVisibility(View.VISIBLE);
+            previousList.setVisibility(View.GONE);
+            courseSearch.setVisibility(View.GONE);
+
+            updateUpcomingList();
+        } else {
+            bookNewList.setVisibility(View.GONE);
+            upcomingList.setVisibility(View.GONE);
+            previousList.setVisibility(View.VISIBLE);
+            courseSearch.setVisibility(View.GONE);
+
+            updatePreviousList();
         }
     }
 
@@ -105,6 +128,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
         // Fetching Data
         DataManager.getDataOfType(StudentDashboardActivity.this, "users", new ArrayList<>() {{
+            add(new DataManager.QueryParam("role", "Tutor", DataManager.QueryType.EQUAL_TO));
             add(new DataManager.QueryParam("coursesToTeach", query, DataManager.QueryType.ARRAY_CONTAINS));
         }}, new DataManager.QueryCallback() {
             @Override
@@ -120,22 +144,175 @@ public class StudentDashboardActivity extends AppCompatActivity {
                 for (QueryDocumentSnapshot document : data) {
                     View tutorList = inflater.inflate(R.layout.student_tutor_list, currentList, false);
                     TextView tutorNameText = tutorList.findViewById(R.id.tutorName);
-                    TextView highestLevelEducationText = tutorList.findViewById(R.id.highestLevelEducation);
+                    TextView tutorRating = tutorList.findViewById(R.id.tutorRating);
                     Button viewBtn = tutorList.findViewById(R.id.view);
 
                     String firstName = document.getString("firstName");
                     String lastName = document.getString("lastName");
-                    String highestLevelOfStudy = document.getString("highestLevelOfStudy");
+
+                    Double rating = document.getDouble("totalRating");
+                    Double numRatings = document.getDouble("numRatings");
+                    Number avgRating = rating != null && numRatings != null ? rating / numRatings : 0;
 
                     tutorNameText.setText(firstName + " " + lastName);
-                    highestLevelEducationText.setText("Highest Level of Study: " + highestLevelOfStudy);
+                    tutorRating.setText(avgRating + " Stars");
+
+                    viewBtn.setOnClickListener(v -> {
+                        Intent intent = new Intent(StudentDashboardActivity.this, TutorInfoActivity.class);
+
+                        intent.putExtra("tutorId", document.getId());
+                        startActivity(intent);
+                        finish();
+                    });
+
                     currentList.addView(tutorList);
+                }
+
+                if (data.isEmpty() && !query.isEmpty()) {
+                    Toast.makeText(StudentDashboardActivity.this, "No tutors for this course", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(String errorMessage) {
+                Toast.makeText(StudentDashboardActivity.this, "Could not load tutors: " + errorMessage, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
+    protected void updateUpcomingList() {
+        // Default Vars
+        FirebaseUser currentUser = AuthManager.getCurrentUser();
+
+        if (currentUser == null) return;
+
+        // Retrieve the user's upcoming sessions
+        DataManager.getDataOfType(StudentDashboardActivity.this, "slots", new ArrayList<>(){{
+            add(new DataManager.QueryParam("bookedBy", currentUser.getUid(), DataManager.QueryType.EQUAL_TO));
+        }}, new DataManager.QueryCallback() {
+            @Override
+            public void onSuccess(QuerySnapshot data) {
+                // Default Vars
+                LinearLayout currentList = findViewById(R.id.upcomingListContainer);
+                LayoutInflater inflater = LayoutInflater.from(StudentDashboardActivity.this);
+
+                // Clear any old templates
+                currentList.removeAllViews();
+
+                // Add in all the templates
+                for (QueryDocumentSnapshot document : data) {
+                    // Ensure it's an upcoming slot
+                    Timestamp startTime = document.getTimestamp("startTime");
+
+                    if (startTime == null || startTime.compareTo(Timestamp.now()) < 0) {
+                        continue;
+                    }
+
+                    // Create the slot
+                    View timeslot = inflater.inflate(R.layout.timeslot_info, currentList, false);
+                    TextView timeslotDetails = timeslot.findViewById(R.id.timeslotDetails);
+                    TextView approvalStatus = timeslot.findViewById(R.id.requiresApproval);
+                    Button cancelBtn = timeslot.findViewById(R.id.view);
+
+                    Timestamp endTime = document.getTimestamp("endTime");
+                    Boolean requiresApproval = document.getBoolean("requiresApproval");
+
+                    timeslotDetails.setText(TutorDashboardActivity.formatSlotTime(startTime, endTime));
+                    approvalStatus.setText(String.format("Approval: %s", Boolean.TRUE.equals(requiresApproval) ? "Manual" : "Auto"));
+                    cancelBtn.setText("Cancel");
+
+                    cancelBtn.setOnClickListener(v -> {
+                        // Make sure it's > 24h
+                        if (startTime.compareTo(Timestamp.now()) < (86_400 * 1_000)) {
+                            Toast.makeText(StudentDashboardActivity.this, "Cannot cancel with 24h or less to session", Toast.LENGTH_LONG).show();
+
+                            return;
+                        }
+
+                        DataManager.updateData(StudentDashboardActivity.this, "slots", document.getId(), new HashMap<>() {{
+                            put("isAvailable", true);
+                            put("bookedBy", null);
+                            put("isApproved", false);
+                            put("isDenied", false);
+                            put("isPending", false);
+                        }}, new DataManager.DataCallback() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot data) {
+                                Toast.makeText(StudentDashboardActivity.this, "Successfully cancelled session", Toast.LENGTH_LONG).show();
+
+                                updateUpcomingList();
+                            }
+
+                            @Override
+                            public void onFailure(String errorMessage) {
+                                Toast.makeText(StudentDashboardActivity .this, "Error while trying to cancel session: " + errorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    });
+
+                    currentList.addView(timeslot);
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(StudentDashboardActivity.this, "Error while trying to load upcoming slots", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    protected void updatePreviousList() {
+        // Default Vars
+        FirebaseUser currentUser = AuthManager.getCurrentUser();
+
+        if (currentUser == null) return;
+
+        // Retrieve the user's upcoming sessions
+        DataManager.getDataOfType(StudentDashboardActivity.this, "slots", new ArrayList<>(){{
+            add(new DataManager.QueryParam("bookedBy", currentUser.getUid(), DataManager.QueryType.EQUAL_TO));
+        }}, new DataManager.QueryCallback() {
+            @Override
+            public void onSuccess(QuerySnapshot data) {
+                // Default Vars
+                LinearLayout currentList = findViewById(R.id.previousListContainer);
+                LayoutInflater inflater = LayoutInflater.from(StudentDashboardActivity.this);
+
+                // Clear any old templates
+                currentList.removeAllViews();
+
+                // Add in all the templates
+                for (QueryDocumentSnapshot document : data) {
+                    // Ensure it's an upcoming slot
+                    Timestamp startTime = document.getTimestamp("startTime");
+
+                    if (startTime == null || startTime.compareTo(Timestamp.now()) > 0) {
+                        continue;
+                    }
+
+                    // Create the slot
+                    View timeslot = inflater.inflate(R.layout.timeslot_info, currentList, false);
+                    TextView timeslotDetails = timeslot.findViewById(R.id.timeslotDetails);
+                    TextView approvalStatus = timeslot.findViewById(R.id.requiresApproval);
+                    Button rateBtn = timeslot.findViewById(R.id.view);
+
+                    Timestamp endTime = document.getTimestamp("endTime");
+                    Boolean requiresApproval = document.getBoolean("requiresApproval");
+
+                    timeslotDetails.setText(TutorDashboardActivity.formatSlotTime(startTime, endTime));
+                    approvalStatus.setText(String.format("Approval: %s", Boolean.TRUE.equals(requiresApproval) ? "Manual" : "Auto"));
+                    rateBtn.setText("Rate");
+
+                    rateBtn.setOnClickListener(v -> {
+
+                    });
+
+                    currentList.addView(timeslot);
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(StudentDashboardActivity.this, "Error while trying to load upcoming slots", Toast.LENGTH_LONG).show();
             }
         });
     }
