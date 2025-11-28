@@ -10,6 +10,9 @@ jobs:
       tag: "default"
     steps:
       - checkout
+      - run:
+          name: Ensure gradlew is executable
+          command: chmod +x ./gradlew
       - android/restore-gradle-cache
       - run:
           name: Run Local Unit Tests
