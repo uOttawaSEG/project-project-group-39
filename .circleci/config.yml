@@ -7,7 +7,7 @@ jobs:
   test:
     executor:
       name: android/android-machine
-      tag: "2023.04.01"
+      tag: "latest"
     steps:
       - checkout
       - android/restore-gradle-cache
