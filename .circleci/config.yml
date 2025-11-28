@@ -7,7 +7,7 @@ jobs:
   test:
     executor:
       name: android/android-machine
-      tag: "2025.10.1"
+      tag: "default"
     steps:
       - checkout
       - android/restore-gradle-cache
