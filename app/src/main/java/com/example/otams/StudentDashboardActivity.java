@@ -302,7 +302,8 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
                         cancelBtn.setOnClickListener(v -> {
                             // Make sure it's > 24h
-                            if (startTime.compareTo(Timestamp.now()) < (86_400 * 1_000)) {
+                            if (startTime.getSeconds() - Timestamp.now().getSeconds() < (86_400)) {
+
                                 Toast.makeText(StudentDashboardActivity.this, "Cannot cancel with 24h or less to session", Toast.LENGTH_LONG).show();
 
                                 return;
@@ -312,6 +313,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
                                 put("isAvailable", true);
                                 put("bookedBy", null);
                                 put("isApproved", false);
+                                put("studentId", null);
                                 put("isDenied", false);
                                 put("isPending", false);
                             }}, new DataManager.DataCallback() {

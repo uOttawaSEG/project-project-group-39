@@ -54,6 +54,7 @@ public class SessionRequestActivity extends AppCompatActivity {
                         DataManager.updateData(SessionRequestActivity.this, "slots", sessionId, new HashMap<String, Object>() {
                             {
                                 put("isApproved", true);
+                                put("isDenied", false);
                                 put("isAvailable", false);
                             }
                         }, new DataManager.DataCallback() {
