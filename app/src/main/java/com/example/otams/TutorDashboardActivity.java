@@ -288,7 +288,6 @@ public class TutorDashboardActivity extends AppCompatActivity {
                     String bookedBy = document.getString("bookedBy");
                     Boolean requiresApproval = document.getBoolean("requiresApproval");
                     Boolean isApproved = document.getBoolean("isApproved");
-
                     if (startTime == null || startTime.compareTo(Timestamp.now()) < 0 || Boolean.TRUE.equals(isAvailable) || bookedBy == null) {
                         continue;
                     }

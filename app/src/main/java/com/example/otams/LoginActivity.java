@@ -27,12 +27,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         ImageButton backButton = findViewById(R.id.backButt);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        backButton.setOnClickListener(click -> {
+            finish();
         });
 
         emailText = findViewById(R.id.emailID);

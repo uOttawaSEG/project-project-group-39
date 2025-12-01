@@ -82,7 +82,7 @@ public class CreateTimeslotActivity extends AppCompatActivity {
 
                 updateStartTimeText();
             },
-                    c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true);
+                    c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), false);
             timePickerDialog.show();
         });
 
@@ -97,7 +97,7 @@ public class CreateTimeslotActivity extends AppCompatActivity {
 
                 updateEndTimeText();
             },
-                    c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true);
+                    c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), false);
             timePickerDialog.show();
         });
 
@@ -115,7 +115,7 @@ public class CreateTimeslotActivity extends AppCompatActivity {
 
         createSlotButton.setOnClickListener(v -> {
 
-
+            Calendar now = Calendar.getInstance();
             long startTimeMillis = startDateTime.getTimeInMillis();
             long endTimeMillis = endDateTime.getTimeInMillis();
 
@@ -125,6 +125,11 @@ public class CreateTimeslotActivity extends AppCompatActivity {
             int startDay = startDateTime.get(Calendar.DATE);
             int endDay = endDateTime.get(Calendar.DATE);
 
+
+            if(startDateTime.before(now)) {
+                Toast.makeText(this, "Start time must be in the future.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             if (endTimeMillis <= startTimeMillis) {
 //                if (startDay <= endDay){
@@ -137,6 +142,8 @@ public class CreateTimeslotActivity extends AppCompatActivity {
                 Toast.makeText(this, "Time slot must be at 30 minute increments.", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+
 
             DataManager.getData(CreateTimeslotActivity.this, new DataManager.DataCallback() {
                 @Override

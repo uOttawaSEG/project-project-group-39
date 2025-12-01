@@ -49,6 +49,7 @@ public class SessionRequestActivity extends AppCompatActivity {
                     Button approveBtn = findViewById(R.id.approve_button);
                     Button rejectBtn = findViewById(R.id.reject_button);
 
+
                     approveBtn.setOnClickListener(click -> {
                         DataManager.updateData(SessionRequestActivity.this, "slots", sessionId, new HashMap<String, Object>() {
                             {
