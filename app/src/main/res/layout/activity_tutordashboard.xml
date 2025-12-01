@@ -39,7 +39,7 @@
             android:id="@+id/upcomingTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upcoming" />
+            android:text="Timeslots" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/pastTab"
@@ -51,7 +51,7 @@
             android:id="@+id/timeslotsTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Timeslots" />
+            android:text="Upcoming" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/pendingRequestsTab"

@@ -11,7 +11,7 @@
         android:layout_width="@dimen/back_size"
         android:layout_height="@dimen/back_size"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="40dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/back_button_description"
         app:layout_constraintStart_toStartOf="parent"
