@@ -42,7 +42,7 @@ public class ExampleUnitTest {
 
     @Test
     public void inheritance_check() {
-        Tutor tutor = new Tutor("Tutor", "Name", "email@test.com", "pass", "123", "PhD", "Math", false, false, true);
+        Tutor tutor = new Tutor("Tutor", "Name", "email@test.com", "pass", "1234567890", "PhD", "SEG2105", false, false, true);
         assertTrue(tutor instanceof User);
         assertNotNull(tutor);
     }

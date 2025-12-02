@@ -14,8 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -114,7 +117,6 @@ public class CreateTimeslotActivity extends AppCompatActivity {
         // Create slot button
 
         createSlotButton.setOnClickListener(v -> {
-
             Calendar now = Calendar.getInstance();
             long startTimeMillis = startDateTime.getTimeInMillis();
             long endTimeMillis = endDateTime.getTimeInMillis();
@@ -122,55 +124,77 @@ public class CreateTimeslotActivity extends AppCompatActivity {
             int startMinute = startDateTime.get(Calendar.MINUTE);
             int endMinute = endDateTime.get(Calendar.MINUTE);
 
-            int startDay = startDateTime.get(Calendar.DATE);
-            int endDay = endDateTime.get(Calendar.DATE);
-
-
-            if(startDateTime.before(now)) {
+            // Existing validation checks
+            if (startDateTime.before(now)) {
                 Toast.makeText(this, "Start time must be in the future.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (endTimeMillis <= startTimeMillis) {
-//                if (startDay <= endDay){
-//                    Toast.makeText(this, "Nope!", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
                 Toast.makeText(this, "End time must be after start time.", Toast.LENGTH_SHORT).show();
-                return; // Stop the function
-            } else if (startMinute % 30 != 0 || endMinute % 30  != 0){
+                return;
+            } else if (startMinute % 30 != 0 || endMinute % 30 != 0) {
                 Toast.makeText(this, "Time slot must be at 30 minute increments.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-
-
+            // Fetch user data first to get the ID
             DataManager.getData(CreateTimeslotActivity.this, new DataManager.DataCallback() {
                 @Override
-                public void onSuccess(DocumentSnapshot data) {
-                    // Now create the data entry for the timeslot
-                    HashMap<String, Object> newData = new HashMap<>();
+                public void onSuccess(DocumentSnapshot userData) {
+                    String tutorId = userData.getId();
 
-                    newData.put("startTime", startDateTime.getTime());
-                    newData.put("endTime", endDateTime.getTime());
-                    newData.put("isAvailable", true);
-                    newData.put("requiresApproval", !isAutoApprove);
-                    newData.put("tutorId", data.getId());
-                    newData.put("isPending", true);
-
-                    DataManager.createData(CreateTimeslotActivity.this, "slots", true, newData, new DataManager.DataCallback() {
+                    // NEW: Query existing slots for this tutor to check for overlaps
+                    DataManager.getDataOfType(CreateTimeslotActivity.this, "slots", new ArrayList<>() {{
+                        add(new DataManager.QueryParam("tutorId", tutorId, DataManager.QueryType.EQUAL_TO));
+                    }}, new DataManager.QueryCallback() {
                         @Override
-                        public void onSuccess(DocumentSnapshot data) {
-                            Toast.makeText(CreateTimeslotActivity.this, "Session Created!", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(CreateTimeslotActivity.this, TutorDashboardActivity.class);
-                            startActivity(intent);
-                            finish();
+                        public void onSuccess(QuerySnapshot querySnapshot) {
+                            // Iterate through existing slots
+                            for (QueryDocumentSnapshot document : querySnapshot) {
+                                Timestamp existingStartTs = document.getTimestamp("startTime");
+                                Timestamp existingEndTs = document.getTimestamp("endTime");
 
+                                if (existingStartTs != null && existingEndTs != null) {
+                                    long existingStartMillis = existingStartTs.toDate().getTime();
+                                    long existingEndMillis = existingEndTs.toDate().getTime();
+
+                                    // Overlap Logic: (StartA < EndB) and (EndA > StartB)
+                                    if (startTimeMillis < existingEndMillis && endTimeMillis > existingStartMillis) {
+                                        Toast.makeText(CreateTimeslotActivity.this, "This time slot overlaps with an existing session.", Toast.LENGTH_LONG).show();
+                                        return; // Stop creation if overlap found
+                                    }
+                                }
+                            }
+
+                            // No overlap found, proceed to create the data
+                            HashMap<String, Object> newData = new HashMap<>();
+                            newData.put("startTime", startDateTime.getTime());
+                            newData.put("endTime", endDateTime.getTime());
+                            newData.put("isAvailable", true);
+                            newData.put("requiresApproval", !isAutoApprove);
+                            newData.put("tutorId", tutorId);
+                            newData.put("isPending", true);
+
+                            DataManager.createData(CreateTimeslotActivity.this, "slots", true, newData, new DataManager.DataCallback() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot data) {
+                                    Toast.makeText(CreateTimeslotActivity.this, "Session Created!", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(CreateTimeslotActivity.this, TutorDashboardActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onFailure(String errorMessage) {
+                                    Toast.makeText(CreateTimeslotActivity.this, "Error saving timeslot data: " + errorMessage, Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
 
                         @Override
                         public void onFailure(String errorMessage) {
-                            Toast.makeText(CreateTimeslotActivity.this, "Error saving timeslot data: " + errorMessage, Toast.LENGTH_LONG).show();
+                            Toast.makeText(CreateTimeslotActivity.this, "Error verifying slots: " + errorMessage, Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -181,15 +205,6 @@ public class CreateTimeslotActivity extends AppCompatActivity {
                     finish();
                 }
             });
-
-            //PLACEHOLDER
-            String approvalMethod = isAutoApprove ? "Auto-Approve" : "Manual Approval";
-            String message = "Slot Created!\n" +
-                    "Start: " + startDateTime.getTime() + "\n" +
-                    "End: " + endDateTime.getTime() + "\n" +
-                    "Approval: " + approvalMethod;
-
-            //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         });
     }
 
